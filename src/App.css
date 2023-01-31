@@ -1,0 +1,100 @@
+*{
+  --color1: #080215;
+  /* --color1: white */
+  --color2: #C7E2FF;
+}
+body{
+  background-color: var(--color1) !important;
+}
+.logo img{
+  width: 23rem;
+  height: 18rem;
+}
+.textField{
+  background-color: var(--color1);
+  margin-top: 15rem;
+  text-transform: capitalize;
+}
+.textField input{
+  color: var(--color2);
+  font-weight: bold;
+}
+.textField label{
+  color: var(--color2)
+}
+.iconNavBar{
+  width: 8rem;
+  height: 8 rem;
+  background-size: cover;
+}
+.titulos{
+  color: white;
+  font-size: 2rem !important;
+  text-shadow: 1px 1px 2px blue;
+}
+.MuiListItemText-primary{
+  color: white;
+  font-size: 1.4rem !important;
+}
+.MuiListItemText-secondary{
+  color: rgba(255, 255, 255, 0.658) !important;
+  font-size: .8rem !important;
+}
+.Select{
+  background-color: transparent;
+  border: solid 1px var(--color2);
+  color: var(--color2);
+  width: 100%;
+  padding: 1rem;
+  margin-top: 15px;
+  border-radius: 3%;
+  font-size: 1rem !important;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+.Select option{
+  background-color: var(--color1);
+  color: var(--color2);
+  
+}
+.contenedorFormulario{
+  border:2px var(--color2);
+  border-style: ridge;
+  border-radius: 5%;
+  margin-top: 35px;
+}
+.tituloFormulario{
+  text-align: center;
+  color: var(--color2);
+  padding-top: 10px;
+  text-transform: uppercase;
+  font-size: 2rem;
+}
+.DataTable{
+  color: var(--color2) !important;
+}
+.DataTable svg, button{
+  color: var(--color2) !important;
+}
+.contenedorProductos{
+  display: grid;
+  gap: 1rem;
+  grid-auto-rows: 22rem;
+  grid-template-columns: repeat(auto-fill, minmax(15rem,1fr));
+  
+}
+.imagenModal{
+  width: 200rem;
+  height: 25rem;
+  background-size: cover;
+  object-fit: cover;
+  overflow: hidden;
+}
+.imagenModal img{
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+}
+.textoModal span{
+  font-weight: 400;
+}
