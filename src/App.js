@@ -9,6 +9,7 @@ import Productos from "./Componentes/Productos";
 import Usuarios from "./Componentes/Usuarios";
 import Cotizaciones from "./Componentes/Cotizaciones";
 import Formulario from "./Componentes/Formulario";
+import FormEdit from './Componentes/FormEdit'
 
 function App() {
   
@@ -32,14 +33,17 @@ function App() {
                 element={<Cotizaciones></Cotizaciones>}
               ></Route>
               <Route
-                path="/crearusuarios"
+                path="/crearusuario"
                 element={
                   <Formulario
                     titulo="Crear Usuario"
                     /* inputs={["usuario", "contraseña"]} */
                     inputs={[
-                      { name: "usuario", type: "email" },
-                      { name: "contraseña", type: "password" },
+                      { value: "us_email", type: "text", label: "usuario"},
+                      { value: "us_password", type: "text",label: "contraseña"},
+                      { value: "us_name", type: "text",label: "nombre"},
+                      { value: "us_lastname", type: "text",label: "apellido"},
+                      
                     ]}
                     selects={["administrador", "gestor"]}
                   ></Formulario>
@@ -52,10 +56,10 @@ function App() {
                     titulo="Crear Producto"
                     /* inputs={["usuario", "contraseña"]} */
                     inputs={[
-                      { name: "nombre", type: "text" },
-                      { name: "descripcion", type: "text" },
-                      { name: "precio", type: "number" },
-                      { name: "imagen", type: "file" },
+                      { value: "pd_name", type: "text", label: "nombre" },
+                      { value: "pd_description", type: "text", label: "descripción" },
+                      { value: "pd_price", type: "number", label: "número" },
+                      { value: "pd_image", type: "file", label: "imagen" },
                     ]}
               
                   ></Formulario>
@@ -64,16 +68,15 @@ function App() {
                  <Route
                 path="/editarProducto/:id"
                 element={
-                  <Formulario
+                  <FormEdit
                     titulo="Editar Producto"
-                    /* inputs={["Titulo", "Precio", "Descripción", "Imagen"]} */
                     inputs={[
-                      { name: "nombre", type: "text" },
-                      { name: "descripcion", type: "text" },
-                      { name: "precio", type: "number" },
-                      { name: "imagen", type: "file" },
+                      { value: "pd_name", type: "text", label: "nombre" },
+                      { value: "pd_description", type: "text", label: "descripción" },
+                      { value: "pd_price", type: "number", label: "número" },
+                      { value: "pd_image", type: "file", label: "imagen" },
                     ]}
-                  ></Formulario>
+                  ></FormEdit>
                 }
               ></Route>
               <Route
@@ -95,10 +98,11 @@ function App() {
                     titulo="Crear cliente"
                     /* inputs={["Nombre", "Apellido", "Telefono", "Correo"]} */
                     inputs={[
-                      { name: "Nombre", type: "text" },
-                      { name: "Apellido", type: "text" },
-                      { name: "Telefono", type: "number" },
-                      { name: "Correo", type: "email" },
+                      { value: "cl_name", type: "text", label:"Nombre" },
+                      { value: "cl_lastname", type: "text",label:"Apellido" },
+                      { value: "cl_ident", type: "number",label:"Identificación" },
+                      { value: "cl_email", type: "email",label:"Correo" },
+                      { value: "cl_address", type: "text",label:"Dirección" },
                     ]}
                   ></Formulario>
                 }

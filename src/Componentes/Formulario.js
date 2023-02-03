@@ -1,4 +1,4 @@
-import {useState, useEffect}  from "react";
+import { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { styled } from "@mui/material/styles";
 import { Formik } from "formik";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const CssTextField = styled(TextField)({
   "& label.Mui-focused": {
@@ -32,42 +32,17 @@ const CssTextField = styled(TextField)({
   },
 });
 export default function Formulario({ titulo, inputs, selects = false }) {
+  const navigate = useNavigate();
   const location = useLocation();
-  const params = useParams();
   const [ruta, setRuta] = useState(null);
-  const [product, setProduct] = useState({
-    pd_name: "datoname",
-    pd_description:"dato descruotuib",
-    pd_price:"5000",
-    pd_image: "/pantalon"
-
-  });
-  const peticion = async() => {
-    if (location.pathname === "/crearproducto"){
-      setRuta("crearProducto");  
-    }
-    else if (location.pathname === "/editarProducto/"+params.id){    
-      setRuta("editarProducto");
-      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/products`);
-      const data = await response.json();
-      data.map((dato,index)=>(
-        dato.product_id == params.id &&  setProduct(dato)
-        
-      ))  
-      console.log(data)
-      
-    }
-    else if (location.pathname === "/crearusuario"){
-      setRuta("crearUsuario");
-    }
-    else if (location.pathname === "/editarusuario/"+params.id){
-      setRuta("editarUsuario");
-    }
-    else if (location.pathname === "/crearcliente"){
-      setRuta("crearCliente");
-    }
-    else if (location.pathname === "/editarcliente"+params.id){
-      setRuta("editarCliente");
+  
+  const peticion = async () => {
+    if (location.pathname === "/crearproducto") {
+      setRuta("productos");
+    } else if (location.pathname === "/crearusuario") {
+      setRuta("usuarios");
+    } else if (location.pathname === "/crearcliente") {
+      setRuta("clientes");
     }
   };
   useEffect(() => {
@@ -75,67 +50,51 @@ export default function Formulario({ titulo, inputs, selects = false }) {
       peticion();
     };
   }, []);
-
   return (
     <Container component="main" maxWidth="xs" className="contenedorFormulario">
       <Typography className="tituloFormulario">{titulo}</Typography>
       <Formik
-        initialValues={{
-          nombre:product.pd_name,
-          descripcion: product.pd_description,
-          precio: product.pd_price,
+        initialValues={{  
+          us_name:"",
+          us_lastname:"",
+          us_email:"",
+          us_password:"",
+          us_admin:"",
+          cl_name:"",
+          cl_lastname:"",
+          cl_email:"",
+          cl_ident:"",
+          cl_address:"",
+          pd_name:"",
+          pd_description:"",
+          pd_image:"",
+          pd_price:""
         }}
         onSubmit={async (valores) => {
-          var pruebabody = {
-            pd_name: valores.nombre,
-            pd_description: valores.descripcion,
-            pd_price: valores.precio,
-            pd_image: valores.imagen,
-          };
-          if (ruta === "crearProducto") {
+          if (ruta === "productos") {
             await fetch(`${process.env.REACT_APP_SERVER_URL}/products`, {
               method: "POST",
-              body: JSON.stringify(pruebabody),
+              body: JSON.stringify(valores),
               headers: { "Content-type": "application/json" },
-            });
-          } else if (ruta === "editarProducto") {
-            await fetch(`${process.env.REACT_APP_SERVER_URL}/products`, {
+            }
+            )
+            navigate("/"+ruta);
+          } else if (ruta === "clientes") {
+            await fetch(`${process.env.REACT_APP_SERVER_URL}/clients`, {
               method: "POST",
-              body: JSON.stringify(pruebabody),
+              body: JSON.stringify(valores),
               headers: { "Content-type": "application/json" },
-              
-            });
-            console.log(product)
+            })
+            navigate("/"+ruta)
+          } else if (ruta === "usuarios") {
+            
+            await fetch(`${process.env.REACT_APP_SERVER_URL}/users`, {
+              method: "POST",
+              body: JSON.stringify(valores),
+              headers: { "Content-type": "application/json" },
+            })
+            navigate("/"+ruta);
           }
-          else if (ruta === "crearCuenta") {
-            await fetch(`${process.env.REACT_APP_SERVER_URL}/products`, {
-              method: "POST",
-              body: JSON.stringify(pruebabody),
-              headers: { "Content-type": "application/json" },
-            });
-          }
-          else if (ruta === "editarCuenta") {
-            await fetch(`${process.env.REACT_APP_SERVER_URL}/products`, {
-              method: "POST",
-              body: JSON.stringify(pruebabody),
-              headers: { "Content-type": "application/json" },
-            });
-          }
-          else if (ruta === "crearUsuario") {
-            await fetch(`${process.env.REACT_APP_SERVER_URL}/products`, {
-              method: "POST",
-              body: JSON.stringify(pruebabody),
-              headers: { "Content-type": "application/json" },
-            });
-          }
-          else if (ruta === "editarUsuario") {
-            await fetch(`${process.env.REACT_APP_SERVER_URL}/products`, {
-              method: "POST",
-              body: JSON.stringify(pruebabody),
-              headers: { "Content-type": "application/json" },
-            });
-          }
-          
         }}
       >
         {({ handleSubmit, values, handleChange }) => (
@@ -159,15 +118,12 @@ export default function Formulario({ titulo, inputs, selects = false }) {
                   <CssTextField
                     key={index}
                     fullWidth
-                    label={input.name}
+                    label={input.label}
                     margin="normal"
                     className="textField"
                     type={input.type}
-                    name={input.name}
+                    name={input.value}
                     focused
-                    defaultValue={
-                      input.type !== "file" ? values[input.name] : ""
-                    }
                     onChange={handleChange}
                   ></CssTextField>
                 ))}
@@ -175,8 +131,8 @@ export default function Formulario({ titulo, inputs, selects = false }) {
                 {selects === false ? (
                   <></>
                 ) : (
-                  <select className="Select" required>
-                    <option selected disabled>
+                  <select className="Select" name="us_admin" onChange={handleChange} required>
+                    <option disabled selected>
                       Seleccione una opción
                     </option>
                     {selects.map((select, index) => (
@@ -190,6 +146,7 @@ export default function Formulario({ titulo, inputs, selects = false }) {
                   fullWidth
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
+                  
                 >
                   Guardar
                 </Button>

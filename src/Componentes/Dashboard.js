@@ -13,7 +13,7 @@ import {
 import { Line } from 'react-chartjs-2';
 
 const fecha = new Date();
-console.log(fecha.getDay())
+
 
 ChartJS.register(
   CategoryScale,

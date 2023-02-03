@@ -87,7 +87,7 @@ export default function Clientes() {
   const loadClients = async () => {
     const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/clients`);
     const data = await response.json();
-    console.log(data)
+    
     setClients(
       data.map(
         ({

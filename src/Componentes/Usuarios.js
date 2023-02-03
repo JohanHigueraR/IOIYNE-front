@@ -6,12 +6,12 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import StarIcon from "@mui/icons-material/Star";
 import { Button, Container, Typography } from "@mui/material";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import { useState, useEffect } from "react";
 
 export default function InsetList() {
-  const location = useLocation()
-  console.log(location.pathname)
+  
+  
 
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
@@ -33,7 +33,7 @@ export default function InsetList() {
       <Button
         variant="contained"
         color="warning"
-        onClick={() => navigate("/crearusuarios")}
+        onClick={() => navigate("/crearusuario")}
       >
         Crear Usuario
       </Button>
