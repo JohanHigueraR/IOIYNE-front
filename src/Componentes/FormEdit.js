@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { styled } from "@mui/material/styles";
 import { Formik } from "formik";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 
 const CssTextField = styled(TextField)({
   "& label.Mui-focused": {
@@ -36,10 +36,11 @@ export default function Formulario({ titulo, inputs, selects = false }) {
   const params = useParams();
   const [ruta, setRuta] = useState(null);
   const [initialValues, setInitalValues] = useState("");
+  const navigate = useNavigate();
 
   const peticion = async () => {
-    if (location.pathname === "/editarProducto/" + params.id) {
-      setRuta("editarProducto");
+    if (location.pathname === "/editarproducto/" + params.id) {
+      setRuta("productos");
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}/products`
       );
@@ -48,9 +49,24 @@ export default function Formulario({ titulo, inputs, selects = false }) {
         (dato, index) => dato.product_id == params.id && setInitalValues(dato)
       );
     } else if (location.pathname === "/editarusuario/" + params.id) {
-      setRuta("editarUsuario");
-    } else if (location.pathname === "/editarcliente" + params.id) {
-      setRuta("editarCliente");
+      setRuta("usuarios");
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}/users`
+      );
+      const data = await response.json();
+      data.map(
+        (dato, index) => dato.user_id == params.id && setInitalValues(dato)
+      );
+    } else if (location.pathname === "/editarcliente/" + params.id) {
+      setRuta("clientes");
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}/clients`
+      );
+      const data = await response.json();
+      data.map(
+        (dato, index) => dato.client_id == params.id && setInitalValues(dato)
+      );
+
     }
   };
   useEffect(() => {
@@ -66,26 +82,29 @@ export default function Formulario({ titulo, inputs, selects = false }) {
           initialValues={initialValues}
           enableReinitialize={true}
           onSubmit={async (valores) => {
-            if (ruta === "editarProducto") {
+            if (ruta === "productos") {
               await fetch(`${process.env.REACT_APP_SERVER_URL}/products/${params.id}`, {
                 method: "PUT",
                 body: JSON.stringify(valores),
                 headers: { "Content-type": "application/json" },
               });
-            } 
-             else if (ruta === "editarCuenta") {
-              await fetch(`${process.env.REACT_APP_SERVER_URL}/products`, {
+              navigate("/" + ruta)
+            }
+            else if (ruta === "clientes") {
+              await fetch(`${process.env.REACT_APP_SERVER_URL}/clients/${params.id}`, {
                 method: "PUT",
                 body: JSON.stringify(valores),
                 headers: { "Content-type": "application/json" },
               });
-            } 
-            else if (ruta === "editarUsuario") {
-              await fetch(`${process.env.REACT_APP_SERVER_URL}/products`, {
+              navigate("/" + ruta)
+            }
+            else if (ruta === "usuarios") {
+              await fetch(`${process.env.REACT_APP_SERVER_URL}/users/${params.id}`, {
                 method: "PUT",
                 body: JSON.stringify(valores),
                 headers: { "Content-type": "application/json" },
               });
+              navigate("/" + ruta)
             }
           }}
         >
@@ -116,9 +135,9 @@ export default function Formulario({ titulo, inputs, selects = false }) {
                       type={input.type}
                       name={input.value}
                       focused
-                      defaultValue={
-                        input.type !== "file" ? values[input.value] : ""
-                      }
+                      // defaultValue={
+                      //   input.type !== "file" ? values[input.value] : ""
+                      // }
                       onChange={handleChange}
                     ></CssTextField>
                   ))}

@@ -23,7 +23,6 @@ export default function ImgMediaCard({
   titulo,
   precio,
   descripción,
-  imagen,
   id,
 }) {
   const navigate = useNavigate();
@@ -32,13 +31,7 @@ export default function ImgMediaCard({
   const handleClose = () => setOpen(false);
   return (
     <>
-      <Card sx={{ maxWidth: 345, backgroundColor: "#C7E2FF", height: "310px" }}>
-        <CardMedia
-          component="img"
-          alt="green iguana"
-          height="140"
-          image={imagen}
-        />
+      <Card sx={{ maxWidth: 345, backgroundColor: "#C7E2FF", height: "150px", marginTop: "12px"}}>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {titulo} {precio}
@@ -51,7 +44,7 @@ export default function ImgMediaCard({
           <Button
             size="small"
             variant="contained"
-            onClick={() => navigate("/editarProducto/" + id)}
+            onClick={() => navigate("/editarproducto/" + id)}
           >
             Editar
           </Button>
@@ -73,9 +66,6 @@ export default function ImgMediaCard({
             alignItems="stretch"
             spacing={2}
           >
-            <div className="imagenModal">
-              <img src={imagen} alt="" />
-            </div>
             <div>
               <Typography className="textoModal" sx={{ fontWeight: "900" }}>
                 ID: <span>{id}</span>
@@ -89,8 +79,8 @@ export default function ImgMediaCard({
               <Typography className="textoModal" sx={{ fontWeight: "900" }}>
                 Cantidad: <span>{id}</span>
               </Typography>
-              <Button variant="contained"  sx={{marginTop: '12rem'}}>Editar</Button>
-              <Button variant="contained" color="warning" sx={{marginTop: '12rem', marginLeft: '2px'}}>Cerrar</Button>
+              <Button variant="contained" sx={{ marginTop: '12rem' }}>Editar</Button>
+              <Button variant="contained" color="warning" sx={{ marginTop: '12rem', marginLeft: '2px' }}>Cerrar</Button>
             </div>
           </Stack>
         </Box>

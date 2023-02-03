@@ -84,6 +84,12 @@ export default function Clientes() {
   const [selectedRow, setSelectedRow] = React.useState();
   const [contextMenu, setContextMenu] = React.useState(null);
   const [clients, setClients] = useState([]);
+
+  const getClientId = (event) => {
+    var id = event.currentTarget.getAttribute("data-id");
+    navigate("/editarcliente/"+id)
+  }
+
   const loadClients = async () => {
     const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/clients`);
     const data = await response.json();
@@ -128,10 +134,7 @@ export default function Clientes() {
   const handleClose = () => {
     setContextMenu(null);
   };
-  const EditarCliente = () => {
-    navigate("/editarcliente");
-    handleClose();
-  };
+
   return (
     <Container sx={{ marginTop: "5rem" }}>
       <Typography className="titulos">Lista de clientes</Typography>
@@ -151,6 +154,7 @@ export default function Clientes() {
           componentsProps={{
             row: {
               onContextMenu: handleContextMenu,
+              onClick: getClientId,
               style: { cursor: "context-menu" },
             },
           }}
@@ -173,7 +177,7 @@ export default function Clientes() {
             },
           }}
         >
-          <MenuItem onClick={EditarCliente}>Editar Cliente</MenuItem>
+          <MenuItem onClick={getClientId}>Editar Cliente</MenuItem>
         </Menu>
       </Box>
     </Container>

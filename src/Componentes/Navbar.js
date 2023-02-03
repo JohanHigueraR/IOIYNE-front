@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import {useNavigate} from 'react-router-dom'
 
-const pages = ['Usuarios', 'Clientes', 'Productos', 'Cotizaciones'];
+const pages = ['usuarios', 'clientes', 'productos', 'cotizaciones'];
 
 
 function ResponsiveAppBar() {
