@@ -19,6 +19,7 @@ import {
   Pagination,
   Typography,
 } from "@mui/material";
+import { useState, useEffect } from "react";
 function CustomToolbar() {
   return (
     <GridToolbarContainer>
@@ -44,137 +45,75 @@ function CustomPagination() {
 const columns = [
   { field: "id", headerName: "ID", width: 50 },
   {
-    field: "Nombre",
+    field: "cl_name",
     headerName: "Nombre",
     width: 140,
     editable: false,
   },
   {
-    field: "Apellido",
+    field: "cl_lastname",
     headerName: "Apellido",
     width: 140,
     editable: false,
   },
   {
-    field: "fullName",
-    headerName: "Nombre Completo",
+    field: "cl_ident",
+    headerName: "Identificación",
     description: "This column has a value getter and is not sortable.",
     sortable: false,
     width: 220,
-    valueGetter: (params) =>
-      `${params.row.Nombre || ""} ${params.row.Apellido || ""}`,
   },
   {
-    field: "Fecha",
-    headerName: "Fecha de registro",
-    type: "number",
-    width: 150,
-    editable: false,
-  },
-  {
-    field: "Numero",
-    headerName: "Numero de contacto",
-    type: "number",
-    width: 160,
-    editable: false,
-  },
-  {
-    field: "Correo",
+    field: "cl_email",
     headerName: "Correo elecronico",
     type: "number",
     width: 200,
     editable: false,
   },
-];
-const fecha = new Date();
-
-const filas = [
   {
-    id: 1,
-    Apellido: "Snow camiloooo",
-    Nombre: "Jon alvarez",
-    Fecha: fecha.toLocaleDateString(),
-    Numero: "3202612584",
-    Correo: "Snow@gmail.com",
-  },
-  {
-    id: 2,
-    Apellido: "Lannister",
-    Nombre: "Cersei",
-    Fecha: fecha.toLocaleDateString(),
-    Numero: "3202612584",
-    Correo: "Snow@gmail.com",
-  },
-  {
-    id: 3,
-    Apellido: "Lannister",
-    Nombre: "Jaime",
-    Fecha: fecha.toLocaleDateString(),
-    Numero: "3202612584",
-    Correo: "Snow@gmail.com",
-  },
-  {
-    id: 4,
-    Apellido: "Stark",
-    Nombre: "Arya",
-    Fecha: fecha.toLocaleDateString(),
-  },
-  {
-    id: 5,
-    Apellido: "Targaryen",
-    Nombre: "Daenerys",
-    Fecha: fecha.toLocaleDateString(),
-  },
-  {
-    id: 6,
-    Apellido: "Melisandre",
-    Nombre: null,
-    Fecha: fecha.toLocaleDateString(),
-  },
-  {
-    id: 7,
-    Apellido: "Clifford",
-    Nombre: "Ferrara",
-    Fecha: fecha.toLocaleDateString(),
-  },
-  {
-    id: 8,
-    Apellido: "Frances",
-    Nombre: "Rossini",
-    Fecha: fecha.toLocaleDateString(),
-  },
-  {
-    id: 9,
-    Apellido: "Roxie",
-    Nombre: "Harvey",
-    Fecha: fecha.toLocaleDateString(),
-  },
-  {
-    id: 10,
-    Apellido: "Roxie",
-    Nombre: "Harvey",
-    Fecha: fecha.toLocaleDateString(),
-  },
-  {
-    id: 11,
-    Apellido: "Roxie",
-    Nombre: "Harvey",
-    Fecha: fecha.toLocaleDateString(),
-  },
-  {
-    id: 12,
-    Apellido: "Roxie",
-    Nombre: "Harvey",
-    Fecha: fecha.toLocaleDateString(),
+    field: "cl_address",
+    headerName: "Dirección",
+    type: "number",
+    width: 200,
+    editable: false,
   },
 ];
 
 export default function Clientes() {
   const navigate = useNavigate();
-  const [rows, setRows] = React.useState(filas);
   const [selectedRow, setSelectedRow] = React.useState();
-
   const [contextMenu, setContextMenu] = React.useState(null);
+  const [clients, setClients] = useState([]);
+  const loadClients = async () => {
+    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/clients`);
+    const data = await response.json();
+    console.log(data)
+    setClients(
+      data.map(
+        ({
+          client_id,
+          cl_name,
+          cl_lastname,
+          cl_email,
+          cl_ident,
+          cl_address
+        }) => {
+          return {
+            id: client_id,
+            cl_name,
+            cl_lastname,
+            cl_email,
+            cl_ident,
+            cl_address,
+          };
+        }
+      )
+    );
+    console.log(clients);
+  };
+  useEffect(() => {
+    loadClients();
+  }, []);
 
   const handleContextMenu = (event) => {
     event.preventDefault();
@@ -201,7 +140,7 @@ export default function Clientes() {
       </Button>
       <Box sx={{ height: 400, width: "100%" }}>
         <DataGrid
-          rows={rows}
+          rows={clients}
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}

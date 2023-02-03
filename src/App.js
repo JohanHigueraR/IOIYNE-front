@@ -1,6 +1,6 @@
 import "./App.css";
 import Login from "./Componentes/Login/Login";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route} from "react-router-dom";
 import { Container } from "@mui/material";
 import ResponsiveAppBar from "./Componentes/Navbar";
 import Dashboard from "./Componentes/Dashboard";
@@ -11,6 +11,7 @@ import Cotizaciones from "./Componentes/Cotizaciones";
 import Formulario from "./Componentes/Formulario";
 
 function App() {
+  
   const login = true;
   return (
     <>
@@ -37,21 +38,52 @@ function App() {
                     titulo="Crear Usuario"
                     /* inputs={["usuario", "contraseña"]} */
                     inputs={[
-                      { input: "usuario", type: "email" },
-                      { input: "contraseña", type: "password" },
+                      { name: "usuario", type: "email" },
+                      { name: "contraseña", type: "password" },
                     ]}
                     selects={["administrador", "gestor"]}
                   ></Formulario>
                 }
               ></Route>
+                 <Route
+                path="/crearproducto"
+                element={
+                  <Formulario
+                    titulo="Crear Producto"
+                    /* inputs={["usuario", "contraseña"]} */
+                    inputs={[
+                      { name: "nombre", type: "text" },
+                      { name: "descripcion", type: "text" },
+                      { name: "precio", type: "number" },
+                      { name: "imagen", type: "file" },
+                    ]}
+              
+                  ></Formulario>
+                }
+              ></Route>
+                 <Route
+                path="/editarProducto/:id"
+                element={
+                  <Formulario
+                    titulo="Editar Producto"
+                    /* inputs={["Titulo", "Precio", "Descripción", "Imagen"]} */
+                    inputs={[
+                      { name: "nombre", type: "text" },
+                      { name: "descripcion", type: "text" },
+                      { name: "precio", type: "number" },
+                      { name: "imagen", type: "file" },
+                    ]}
+                  ></Formulario>
+                }
+              ></Route>
               <Route
-                path="/editarCuenta"
+                path="/editarCuenta/:id"
                 element={
                   <Formulario
                     titulo="Editar Usuario"
                     inputs={[
-                      { input: "usuario", type: "email" },
-                      { input: "contraseña", type: "password" },
+                      { name: "usuario", type: "email" },
+                      { name: "contraseña", type: "password" },
                     ]}
                   ></Formulario>
                 }
@@ -63,10 +95,10 @@ function App() {
                     titulo="Crear cliente"
                     /* inputs={["Nombre", "Apellido", "Telefono", "Correo"]} */
                     inputs={[
-                      { input: "Nombre", type: "text" },
-                      { input: "Apellido", type: "text" },
-                      { input: "Telefono", type: "number" },
-                      { input: "Correo", type: "email" },
+                      { name: "Nombre", type: "text" },
+                      { name: "Apellido", type: "text" },
+                      { name: "Telefono", type: "number" },
+                      { name: "Correo", type: "email" },
                     ]}
                   ></Formulario>
                 }
@@ -77,24 +109,15 @@ function App() {
                   <Formulario
                     titulo="Editar cliente"
                     inputs={[
-                      { input: "Nombre", type: "text" },
-                      { input: "Apellido", type: "text" },
-                      { input: "Telefono", type: "number" },
-                      { input: "Correo", type: "email" },
+                      { name: "Nombre", type: "text" },
+                      { name: "Apellido", type: "text" },
+                      { name: "Telefono", type: "number" },
+                      { name: "Correo", type: "email" },
                     ]}
                   ></Formulario>
                 }
               ></Route>
-              <Route
-                path="/editarProducto/:id"
-                element={
-                  <Formulario
-                    titulo="Editar Producto"
-                    /* inputs={["Titulo", "Precio", "Descripción", "Imagen"]} */
-                    inputs={[{input:"Titulo", type: "text"}, {input: "Precio", type: "number"},{input: "Descripción", type: "text"}, {input:"imagen", type:"file"}]}
-                  ></Formulario>
-                }
-              ></Route>
+           
             </Routes>
           </Container>
         </BrowserRouter>
