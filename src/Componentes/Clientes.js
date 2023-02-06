@@ -12,6 +12,7 @@ import {
   esES,
 } from "@mui/x-data-grid";
 import {
+  Alert,
   Button,
   Container,
   Menu,
@@ -138,6 +139,7 @@ export default function Clientes() {
   return (
     <Container sx={{ marginTop: "5rem" }}>
       <Typography className="titulos">Lista de clientes</Typography>
+      <Alert severity="info" sx={{background:'#080215', color:'#C7E2FF'}}>Para editar pulse click en el cliente</Alert>
       <Button variant="contained" onClick={() => navigate("/crearcliente")}>
         Crear Cliente
       </Button>
@@ -159,26 +161,6 @@ export default function Clientes() {
             },
           }}
         />
-        <Menu
-          open={contextMenu !== null}
-          onClose={handleClose}
-          anchorReference="anchorPosition"
-          anchorPosition={
-            contextMenu !== null
-              ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
-              : undefined
-          }
-          componentsProps={{
-            root: {
-              onContextMenu: (e) => {
-                e.preventDefault();
-                handleClose();
-              },
-            },
-          }}
-        >
-          <MenuItem onClick={getClientId}>Editar Cliente</MenuItem>
-        </Menu>
       </Box>
     </Container>
   );

@@ -1,4 +1,4 @@
-import * as React from "react";
+import {useState} from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
 
 const CssTextField = styled(TextField)({
   "& label.Mui-focused": {
@@ -48,15 +49,20 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignIn() {
+export default function Login({log}) {
+  localStorage.setItem('validar',false)
+  const [login, setLogin] = useState({
+    us_email: "",
+    us_password: ""
+  })
   const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+    event.preventDefault()
+    log(login)
+
+};
+  const handleChange = (e) =>{
+    setLogin({ ...login, [e.target.name]: e.target.value });
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -85,12 +91,16 @@ export default function SignIn() {
               label="Usuario"
               margin="normal"
               className="textField"
+              onChange={handleChange}
+              name="us_email"
             ></CssTextField>
             <CssTextField
               fullWidth
               label="Contraseña"
               margin="normal"
               className="textField"
+              onChange={handleChange}
+              name="us_password"
             ></CssTextField>
 
             <Button

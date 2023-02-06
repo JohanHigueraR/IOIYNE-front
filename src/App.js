@@ -1,6 +1,6 @@
 import "./App.css";
 import Login from "./Componentes/Login/Login";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { Container } from "@mui/material";
 import ResponsiveAppBar from "./Componentes/Navbar";
 import Dashboard from "./Componentes/Dashboard";
@@ -9,16 +9,31 @@ import Productos from "./Componentes/Productos";
 import Usuarios from "./Componentes/Usuarios";
 import Cotizaciones from "./Componentes/Cotizaciones";
 import Formulario from "./Componentes/Formulario";
-import FormEdit from './Componentes/FormEdit'
+import FormEdit from "./Componentes/FormEdit";
+import Factura from "./Componentes/Factura";
+import { useState } from "react";
 
 function App() {
+  const [loggedUser, setLoggedUser] = useState("User not found");
+  const validarLogin = async (logeado) => {
+    const response = await fetch("http://localhost:4000/login", {
+      method: "PUT",
+      body: JSON.stringify(logeado),
+      headers: { "Content-type": "application/json" },
+    });
+    const data = await response.json();
+    setLoggedUser(data);
+    loggedUser === "User not found"
+      ? localStorage.setItem("validar", false)
+      : localStorage.setItem("validar", true);
+  };
 
-  const login = true;
   return (
     <>
-      {login === true ? (
+      {localStorage.validar === "true" ? (
         <BrowserRouter>
-          <ResponsiveAppBar></ResponsiveAppBar>
+          <ResponsiveAppBar
+          loggedUser={loggedUser}></ResponsiveAppBar>
           <Container>
             <Routes>
               <Route path="/" element={<Dashboard></Dashboard>}></Route>
@@ -40,13 +55,35 @@ function App() {
                     /* inputs={["usuario", "contraseña"]} */
                     inputs={[
                       { value: "us_email", type: "text", label: "usuario" },
-                      { value: "us_password", type: "text", label: "contraseña" },
+                      {
+                        value: "us_password",
+                        type: "text",
+                        label: "contraseña",
+                      },
                       { value: "us_name", type: "text", label: "nombre" },
                       { value: "us_lastname", type: "text", label: "apellido" },
-
                     ]}
                     selects={["administrador", "gestor"]}
                   ></Formulario>
+                }
+              ></Route>
+              <Route
+                path="/editarusuario/:id"
+                element={
+                  <FormEdit
+                    titulo="Editar Usuario"
+                    inputs={[
+                      { value: "us_email", type: "text", label: "usuario" },
+                      {
+                        value: "us_password",
+                        type: "text",
+                        label: "contraseña",
+                      },
+                      { value: "us_name", type: "text", label: "nombre" },
+                      { value: "us_lastname", type: "text", label: "apellido" },
+                    ]}
+                    loggedUser={loggedUser}
+                  ></FormEdit>
                 }
               ></Route>
               <Route
@@ -57,10 +94,13 @@ function App() {
                     /* inputs={["usuario", "contraseña"]} */
                     inputs={[
                       { value: "pd_name", type: "text", label: "nombre" },
-                      { value: "pd_description", type: "text", label: "descripción" },
+                      {
+                        value: "pd_description",
+                        type: "text",
+                        label: "descripción",
+                      },
                       { value: "pd_price", type: "number", label: "precio" },
                     ]}
-
                   ></Formulario>
                 }
               ></Route>
@@ -71,7 +111,11 @@ function App() {
                     titulo="Editar Producto"
                     inputs={[
                       { value: "pd_name", type: "text", label: "nombre" },
-                      { value: "pd_description", type: "text", label: "descripción" },
+                      {
+                        value: "pd_description",
+                        type: "text",
+                        label: "descripción",
+                      },
                       { value: "pd_price", type: "number", label: "Precio" },
                     ]}
                   ></FormEdit>
@@ -85,7 +129,11 @@ function App() {
                     inputs={[
                       { value: "cl_name", type: "text", label: "Nombre" },
                       { value: "cl_lastname", type: "text", label: "Apellido" },
-                      { value: "cl_ident", type: "number", label: "Identificación" },
+                      {
+                        value: "cl_ident",
+                        type: "number",
+                        label: "Identificación",
+                      },
                       { value: "cl_email", type: "email", label: "Correo" },
                       { value: "cl_address", type: "text", label: "Dirección" },
                     ]}
@@ -101,7 +149,11 @@ function App() {
                     inputs={[
                       { value: "cl_name", type: "text", label: "Nombre" },
                       { value: "cl_lastname", type: "text", label: "Apellido" },
-                      { value: "cl_ident", type: "number", label: "Identificación" },
+                      {
+                        value: "cl_ident",
+                        type: "number",
+                        label: "Identificación",
+                      },
                       { value: "cl_email", type: "email", label: "Correo" },
                       { value: "cl_address", type: "text", label: "Dirección" },
                     ]}
@@ -122,12 +174,12 @@ function App() {
                   ></Formulario>
                 }
               ></Route>
-
+              <Route path="/factura" element={<Factura></Factura>}></Route>
             </Routes>
           </Container>
         </BrowserRouter>
       ) : (
-        <Login></Login>
+        <Login log={validarLogin}></Login>
       )}
     </>
   );

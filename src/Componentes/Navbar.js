@@ -17,7 +17,7 @@ import {useNavigate} from 'react-router-dom'
 const pages = ['usuarios', 'clientes', 'productos', 'cotizaciones'];
 
 
-function ResponsiveAppBar() {
+function ResponsiveAppBar({loggedUser}) {
     const navigate = useNavigate()
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -38,7 +38,7 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" className='no-print'>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -150,11 +150,11 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
            
-                <MenuItem onClick={()=>navigate("/editarCuenta")}>
+                <MenuItem onClick={()=>navigate("/editarusuario/"+loggedUser.user_id)}>
                   <Typography textAlign="center">Cuenta</Typography>
                 </MenuItem>
                 <MenuItem>
-                  <Typography textAlign="center">Cerrar Sesión</Typography>
+                  <Typography textAlign="center" onClick={() =>{localStorage.setItem("validar", 'false'); window.location.reload()}}>Cerrar Sesión</Typography>
                 </MenuItem>
             
             </Menu>

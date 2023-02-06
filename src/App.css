@@ -98,3 +98,8 @@ body{
 .textoModal span{
   font-weight: 400;
 }
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
