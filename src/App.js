@@ -1,6 +1,6 @@
 import "./App.css";
 import Login from "./Componentes/Login/Login";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Container } from "@mui/material";
 import ResponsiveAppBar from "./Componentes/Navbar";
 import Dashboard from "./Componentes/Dashboard";
@@ -14,8 +14,9 @@ import Factura from "./Componentes/Factura";
 import { useState } from "react";
 
 function App() {
+  
   const [loggedUser, setLoggedUser] = useState("User not found");
-  const validarLogin = async (logeado) => {
+  const validateLogin = async (logeado) => {
     const response = await fetch("http://localhost:4000/login", {
       method: "PUT",
       body: JSON.stringify(logeado),
@@ -23,9 +24,12 @@ function App() {
     });
     const data = await response.json();
     setLoggedUser(data);
-    loggedUser === "User not found"
-      ? localStorage.setItem("validar", false)
-      : localStorage.setItem("validar", true);
+      if(loggedUser === "User not found"){
+        localStorage.setItem("validar", false)
+      }else{
+        localStorage.setItem("localLoggedUser", JSON.stringify(data));
+        localStorage.setItem("validar", true)
+      }
   };
 
   return (
@@ -179,7 +183,7 @@ function App() {
           </Container>
         </BrowserRouter>
       ) : (
-        <Login log={validarLogin}></Login>
+        <Login validateLogin={validateLogin}></Login>
       )}
     </>
   );

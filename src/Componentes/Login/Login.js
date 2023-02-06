@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
-import { useNavigate } from "react-router-dom";
+
 
 const CssTextField = styled(TextField)({
   "& label.Mui-focused": {
@@ -49,19 +49,20 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function Login({log}) {
+export default function Login({validateLogin}) {
+  localStorage.setItem("localLoggedUser", false);
   localStorage.setItem('validar',false)
-  const [login, setLogin] = useState({
+  const [typeLogin, setLogin] = useState({
     us_email: "",
     us_password: ""
   })
   const handleSubmit = (event) => {
     event.preventDefault()
-    log(login)
+    validateLogin(typeLogin)
 
 };
   const handleChange = (e) =>{
-    setLogin({ ...login, [e.target.name]: e.target.value });
+    setLogin({ ...typeLogin, [e.target.name]: e.target.value });
   }
 
   return (

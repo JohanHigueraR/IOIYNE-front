@@ -16,6 +16,12 @@ import {useNavigate} from 'react-router-dom'
 
 const pages = ['usuarios', 'clientes', 'productos', 'cotizaciones'];
 
+let object = localStorage.getItem("localLoggedUser");
+if (object) {
+  object = JSON.parse(object);
+} else {
+  object = {};
+}
 
 function ResponsiveAppBar({loggedUser}) {
     const navigate = useNavigate()
@@ -150,7 +156,8 @@ function ResponsiveAppBar({loggedUser}) {
               onClose={handleCloseUserMenu}
             >
            
-                <MenuItem onClick={()=>navigate("/editarusuario/"+loggedUser.user_id)}>
+                <MenuItem /* onClick={()=>navigate("/editarusuario/"+loggedUser.user_id)} */
+                onClick={()=>console.log(object.user_id)}>
                   <Typography textAlign="center">Cuenta</Typography>
                 </MenuItem>
                 <MenuItem>
