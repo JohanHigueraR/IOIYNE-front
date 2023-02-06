@@ -16,12 +16,15 @@ import {useNavigate} from 'react-router-dom'
 
 const pages = ['usuarios', 'clientes', 'productos', 'cotizaciones'];
 
-let object = localStorage.getItem("localLoggedUser");
-if (object) {
-  object = JSON.parse(object);
+// obtener el objeto del loggedUser del local storage
+let objectLoggedUser = localStorage.getItem("localLoggedUser");
+if (objectLoggedUser) {
+  objectLoggedUser = JSON.parse(objectLoggedUser);
 } else {
-  object = {};
+  objectLoggedUser = {};
 }
+
+console.log(objectLoggedUser)
 
 function ResponsiveAppBar({loggedUser}) {
     const navigate = useNavigate()
@@ -156,8 +159,10 @@ function ResponsiveAppBar({loggedUser}) {
               onClose={handleCloseUserMenu}
             >
            
-                <MenuItem /* onClick={()=>navigate("/editarusuario/"+loggedUser.user_id)} */
-                onClick={()=>console.log(object.user_id)}>
+                <MenuItem  onClick={()=>navigate("/editarusuario/"+objectLoggedUser.user_id)} > 
+                {/* // onClick={()=>console.log(objectLoggedUser.user_id)}> */
+                  // Obtener el id del loggedUser desde el objeto obtenido del local storage
+                }
                   <Typography textAlign="center">Cuenta</Typography>
                 </MenuItem>
                 <MenuItem>
