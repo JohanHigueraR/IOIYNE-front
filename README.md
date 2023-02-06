@@ -1,6 +1,6 @@
 # IOYNE CRM APP 
 
-This is a CRM app tha was created using PERN stack (PostgreSQL, Express, ReactJS and NodeJS) with the react component library Material UI
+This is a CRM app created using PERN stack (PostgreSQL, Express, ReactJS and NodeJS) with the react component library Material UI
 
 ## Installation
 
