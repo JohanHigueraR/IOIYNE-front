@@ -1,4 +1,4 @@
-import {useState} from "react";
+import { useState } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 
-
+// Estilos para el css text field
 const CssTextField = styled(TextField)({
   "& label.Mui-focused": {
     color: "#C7E2FF",
@@ -29,6 +29,7 @@ const CssTextField = styled(TextField)({
   },
 });
 
+// Logo
 function Copyright(props) {
   return (
     <Typography
@@ -47,23 +48,34 @@ function Copyright(props) {
   );
 }
 
+// tema 
 const theme = createTheme();
 
-export default function Login({validateLogin}) {
+// Creacion de componente login: La funcion validateLogin viene como prop desde app.js
+export default function Login({ validateLogin }) {
+
+  // Al cargar el componente, los valores de validar y del usuario son falsos
   localStorage.setItem("localLoggedUser", false);
-  localStorage.setItem('validar',false)
-  const [typeLogin, setLogin] = useState({
+  localStorage.setItem('validar', false);
+
+  // Se inician los valores del usario en vacio
+  const [typedLogin, setLogin] = useState({
     us_email: "",
     us_password: ""
-  })
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    validateLogin(typeLogin)
+  });
 
-};
-  const handleChange = (e) =>{
-    setLogin({ ...typeLogin, [e.target.name]: e.target.value });
+  // Captura los valores tipeados en el campo de usuario y contraseña
+  const handleChange = (e) => {
+    setLogin({ ...typedLogin, [e.target.name]: e.target.value });
   }
+
+  // Al presionar iniciar sesion, ejecuta la funcion definidia en app.js que llega al componente 
+  // del login por props, pasandole los datos tipeados por el usuario 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    validateLogin(typedLogin);
+  };
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -95,6 +107,7 @@ export default function Login({validateLogin}) {
               onChange={handleChange}
               name="us_email"
             ></CssTextField>
+
             <CssTextField
               fullWidth
               label="Contraseña"
@@ -112,6 +125,7 @@ export default function Login({validateLogin}) {
             >
               Iniciar Sesión
             </Button>
+
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />

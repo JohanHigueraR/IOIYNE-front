@@ -14,22 +14,28 @@ import Factura from "./Componentes/Factura";
 import { useState } from "react";
 
 function App() {
-  
-  const [loggedUser, setLoggedUser] = useState("User not found");
+
+
+  const [loggedUser, setLoggedUser] = useState("User not found");   // En loggedUser vamos a almacenar los datos del usuario loggeado
+
   const validateLogin = async (logeado) => {
-    const response = await fetch("http://localhost:4000/login", {
+
+    const response = await fetch("http://localhost:4000/login", {   // Esta ruta nos devuelve el objeto del usuario loggeado, si no existe, devuelve "User not found"
       method: "PUT",
-      body: JSON.stringify(logeado),
+      body: JSON.stringify(logeado),                                // aqui le pasamos el email y la contraseña y validamos el hash
       headers: { "Content-type": "application/json" },
     });
+
     const data = await response.json();
-    setLoggedUser(data);
-      if(loggedUser === "User not found"){
-        localStorage.setItem("validar", false)
-      }else{
-        localStorage.setItem("localLoggedUser", JSON.stringify(data));
-        localStorage.setItem("validar", true)
-      }
+    setLoggedUser(data);   // seteamos el usuario loggeado 
+
+    if (loggedUser === "User not found") {
+      localStorage.setItem("validar", false)      // Si el usuario no esta loggeado, el valor de llave "validar" es false
+    } else {
+      localStorage.setItem("validar", true);     // Si el usuario esta loggeado, el valor de llave "validar" es true
+      localStorage.setItem("localLoggedUser", JSON.stringify(data));  // Almacenamos el objeto de usuario loggeado en local storage  como string
+    }
+
   };
 
   return (
@@ -37,7 +43,7 @@ function App() {
       {localStorage.validar === "true" ? (
         <BrowserRouter>
           <ResponsiveAppBar
-          loggedUser={loggedUser}></ResponsiveAppBar>
+            loggedUser={loggedUser}></ResponsiveAppBar>
           <Container>
             <Routes>
               <Route path="/" element={<Dashboard></Dashboard>}></Route>
