@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {useState} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -17,19 +17,13 @@ const adminPages = ['usuarios', 'clientes', 'productos', 'cotizaciones'];
 const managerPages =['clientes', 'productos', 'cotizaciones']
 
 // obtener el objeto del loggedUser del local storage
-let objectLoggedUser = localStorage.getItem("localLoggedUser");
-if (objectLoggedUser) {
-  objectLoggedUser = JSON.parse(objectLoggedUser);
-} else {
-  objectLoggedUser = {};
-}
 
-console.log(objectLoggedUser)
-
-function ResponsiveAppBar() {
-    const navigate = useNavigate()
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+function ResponsiveAppBar({loginState, setLoginAux}) {
+  const userLogin = JSON.parse(loginState)
+  console.log(userLogin)
+  const navigate = useNavigate()
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] =useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -98,7 +92,7 @@ function ResponsiveAppBar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {objectLoggedUser.us_admin=== true? adminPages.map((page,index) => (
+              {userLogin.us_admin=== true? adminPages.map((page,index) => (
                 <MenuItem key={index} onClick={()=>{handleCloseNavMenu(); navigate("/"+page)}}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
@@ -129,7 +123,7 @@ function ResponsiveAppBar() {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-          {objectLoggedUser.us_admin=== true? adminPages.map((page, index) => (
+          {userLogin.us_admin=== true? adminPages.map((page, index) => (
                 <MenuItem key={index} onClick={()=>{handleCloseNavMenu(); navigate("/"+page)}}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
@@ -163,14 +157,14 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
            
-                <MenuItem  onClick={()=>navigate("/editarusuario/"+objectLoggedUser.user_id)} > 
+                <MenuItem  onClick={()=>{navigate("/editarusuario/"+userLogin.user_id);window.location.reload()}} > 
                 {/* // onClick={()=>console.log(objectLoggedUser.user_id)}> */
                   // Obtener el id del loggedUser desde el objeto obtenido del local storage
                 }
                   <Typography textAlign="center">Cuenta</Typography>
                 </MenuItem>
                 <MenuItem>
-                  <Typography textAlign="center" onClick={() =>{localStorage.setItem("validar", 'false'); window.location.reload()}}>Cerrar Sesión</Typography>
+                  <Typography textAlign="center" onClick={() =>{setLoginAux(""); navigate("/"); localStorage.setItem("loginOk", "false")}}>Cerrar Sesión</Typography>
                 </MenuItem>
             
             </Menu>

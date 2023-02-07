@@ -31,7 +31,7 @@ const CssTextField = styled(TextField)({
     color: "red",
   },
 });
-export default function Formulario({ titulo, inputs, selects = false}) {
+export default function FormEdit({ titulo, inputs, selects = false}) {
   const location = useLocation();
   const params = useParams();
   const [ruta, setRuta] = useState(null);
@@ -70,9 +70,7 @@ export default function Formulario({ titulo, inputs, selects = false}) {
     }
   };
   useEffect(() => {
-    return () => {
       peticion();
-    };
   },[]);
   return (
     <Container component="main" maxWidth="xs" className="contenedorFormulario">
@@ -169,7 +167,7 @@ export default function Formulario({ titulo, inputs, selects = false}) {
           )}
         </Formik>
       ) : (
-        <></>
+        <Typography sx={{color:'white'}}>Esta entrando al else</Typography>
       )}
     </Container>
   );

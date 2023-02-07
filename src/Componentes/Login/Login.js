@@ -53,10 +53,9 @@ function Copyright(props) {
 const theme = createTheme();
 
 // Creacion de componente login: La funcion validateLogin viene como prop desde app.js
-export default function Login({ getSubmitLogin }) {
-  localStorage.setItem('loginOk', false)
-  localStorage.setItem('loginState', false)
-  // Se inician los valores del usario en vacio
+export default function Login({ getSubmitLogin, loginStateAux }) {
+  console.log(loginStateAux)
+  localStorage.setItem('loginState', 'false')
   const [typedLogin, setLogin] = useState({
     us_email: "",
     us_password: "",
@@ -72,11 +71,11 @@ export default function Login({ getSubmitLogin }) {
     getSubmitLogin(typedLogin);
   };
 
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
-        {localStorage.loginState === "contraseña incorrecta" ||
-        "cuenta bloqueada por dos horas" ? (
+        {loginStateAux === "contraseña incorrecta"|| loginStateAux === "cuenta bloqueada por dos horas"? (
           <Alert
             severity="error"
             sx={{
@@ -86,10 +85,10 @@ export default function Login({ getSubmitLogin }) {
               fontSize: "1rem",
             }}
           >
-            {localStorage.loginState}
+            {loginStateAux}
           </Alert>
         ) : (
-          <></>
+        <></>
         )}
 
         <CssBaseline />

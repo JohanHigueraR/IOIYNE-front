@@ -14,12 +14,10 @@ import Factura from "./Componentes/Factura";
 import { useEffect, useState } from "react";
 
 function App() {
-  
-  const [loginState, setLoggedUser] = useState(""); 
+  const [loginState, setLoggedUser] = useState("");
   // En loggedUser vamos a almacenar los datos del usuario loggeado
 
   const getSubmitLogin = async (logeado) => {
-
     const response = await fetch("http://localhost:4000/login", {
       // Esta ruta nos devuelve el objeto del usuario loggeado, si no existe, devuelve "User not found"
       method: "PUT",
@@ -28,35 +26,38 @@ function App() {
     });
     const data = await response.json();
     setLoggedUser(data); // seteamos el usuario loggeado
-  }
+  };
 
-  const validateLogin = ()=>{
+  const validateLogin = () => {
+    if (loginState === "cuenta bloqueada por dos horas") {
+      localStorage.setItem("loginState", loginState);
+    } else if (loginState === "") {
+    } else if (loginState === "contraseña incorrecta") {
+      localStorage.setItem("loginState", loginState);
+    } else {
+      localStorage.setItem("loginState", JSON.stringify(loginState));
+      localStorage.setItem("loginOk", "true");
+    }
+  };
+  const [loginAux, setLoginAux] = useState("");
+  const [loginStateAux, setLoginUserAux] = useState("");
+  const saveDataLocaStorage = () => {
+    setLoginAux(localStorage.getItem("loginOk"));
+    setLoginUserAux(localStorage.getItem("loginState"));
+  };
 
-
-    if(loginState === "cuenta bloqueada por dos horas"){
-      localStorage.setItem('loginState', loginState)
-    }
-    else if(loginState === ""){
-      
-    }
-    else if(loginState === "contraseña incorrecta"){
-      localStorage.setItem('loginState', loginState)
-    }
-    else{
-      localStorage.setItem('loginState', loginState)
-      localStorage.setItem('loginOk', 'true')
-    }
-  }
-  
   useEffect(() => {
-    validateLogin()
-  });
+    validateLogin();
+  }, [loginState]);
+  useEffect(() => {
+    saveDataLocaStorage();
+  }, [loginState]);
 
   return (
     <>
-      { localStorage.loginSuccesful === 'true'? (
+      {loginAux === "true" ? (
         <BrowserRouter>
-          <ResponsiveAppBar></ResponsiveAppBar>
+          <ResponsiveAppBar loginState={loginStateAux} setLoginAux={setLoginAux}></ResponsiveAppBar>
           <Container>
             <Routes>
               <Route path="/" element={<Dashboard></Dashboard>}></Route>
@@ -99,14 +100,13 @@ function App() {
                       { value: "us_email", type: "text", label: "usuario" },
                       {
                         value: "us_password",
-                        type: "text",
+                        type: "password",
                         label: "contraseña",
                       },
                       { value: "us_name", type: "text", label: "nombre" },
                       { value: "us_lastname", type: "text", label: "apellido" },
                     ]}
                     selects={["administrador", "gestor"]}
-                    
                   ></FormEdit>
                 }
               ></Route>
@@ -184,26 +184,12 @@ function App() {
                   ></Formulario>
                 }
               ></Route>
-              <Route
-                path="/editarcliente"
-                element={
-                  <Formulario
-                    titulo="Editar cliente"
-                    inputs={[
-                      { name: "Nombre", type: "text" },
-                      { name: "Apellido", type: "text" },
-                      { name: "Telefono", type: "number" },
-                      { name: "Correo", type: "email" },
-                    ]}
-                  ></Formulario>
-                }
-              ></Route>
               <Route path="/factura" element={<Factura></Factura>}></Route>
             </Routes>
           </Container>
         </BrowserRouter>
       ) : (
-        <Login getSubmitLogin={getSubmitLogin}></Login>
+        <Login getSubmitLogin={getSubmitLogin} loginStateAux={loginStateAux}></Login>
       )}
     </>
   );
