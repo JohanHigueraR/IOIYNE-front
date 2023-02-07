@@ -15,12 +15,11 @@ import {
   Alert,
   Button,
   Container,
-  Menu,
-  MenuItem,
   Pagination,
   Typography,
 } from "@mui/material";
 import { useState, useEffect } from "react";
+import { data } from "./Dashboard";
 function CustomToolbar() {
   return (
     <GridToolbarContainer>
@@ -85,8 +84,6 @@ const columns = [
 
 export default function Cotizaciones() {
   const navigate = useNavigate();
-  const [selectedRow, setSelectedRow] = React.useState();
-  const [contextMenu, setContextMenu] = React.useState(null);
   const [quotations, setQuotations] = useState([]);
 
   const getBillId = (event) => {
@@ -133,20 +130,6 @@ export default function Cotizaciones() {
     loadQuotations();
   }, []);
 
-  const handleContextMenu = (event) => {
-    event.preventDefault();
-    setSelectedRow(Number(event.currentTarget.getAttribute("data-id")));
-    setContextMenu(
-      contextMenu === null
-        ? { mouseX: event.clientX - 2, mouseY: event.clientY - 4 }
-        : null
-    );
-  };
-
-  const handleClose = () => {
-    setContextMenu(null);
-  };
-
   return (
     <Container sx={{ marginTop: "5rem" }}>
       <Typography className="titulos">Lista de clientes</Typography>
@@ -156,6 +139,7 @@ export default function Cotizaciones() {
       </Button>
       <Box sx={{ height: 400, width: "100%" }}>
         <DataGrid
+          key={data.id}
           rows={quotations}
           columns={columns}
           pageSize={5}
@@ -166,7 +150,7 @@ export default function Cotizaciones() {
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           componentsProps={{
             row: {
-              onContextMenu: handleContextMenu,
+              
               style: { cursor: "context-menu" },
               onClick: getBillId
             },

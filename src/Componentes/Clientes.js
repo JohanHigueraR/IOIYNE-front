@@ -15,8 +15,6 @@ import {
   Alert,
   Button,
   Container,
-  Menu,
-  MenuItem,
   Pagination,
   Typography,
 } from "@mui/material";
@@ -82,8 +80,6 @@ const columns = [
 
 export default function Clientes() {
   const navigate = useNavigate();
-  const [selectedRow, setSelectedRow] = React.useState();
-  const [contextMenu, setContextMenu] = React.useState(null);
   const [clients, setClients] = useState([]);
 
   const getClientId = (event) => {
@@ -120,21 +116,7 @@ export default function Clientes() {
   };
   useEffect(() => {
     loadClients();
-  }, []);
-
-  const handleContextMenu = (event) => {
-    event.preventDefault();
-    setSelectedRow(Number(event.currentTarget.getAttribute("data-id")));
-    setContextMenu(
-      contextMenu === null
-        ? { mouseX: event.clientX - 2, mouseY: event.clientY - 4 }
-        : null
-    );
-  };
-
-  const handleClose = () => {
-    setContextMenu(null);
-  };
+  },[]);
 
   return (
     <Container sx={{ marginTop: "5rem" }}>
@@ -155,7 +137,7 @@ export default function Clientes() {
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           componentsProps={{
             row: {
-              onContextMenu: handleContextMenu,
+              
               onClick: getClientId,
               style: { cursor: "context-menu" },
             },

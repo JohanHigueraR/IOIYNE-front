@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
+import { Alert } from "@mui/material";
 
 // Estilos para el css text field
 const CssTextField = styled(TextField)({
@@ -80,6 +81,7 @@ export default function Login({ validateLogin }) {
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
+      {localStorage.error}<Alert severity="error" sx={{background:'#1d1d1d', color:'#C7E2FF', marginTop:'2rem', fontSize: '1rem'}}>Cuenta bloqueada por 2 horas</Alert>
         <CssBaseline />
         <Box
           sx={{

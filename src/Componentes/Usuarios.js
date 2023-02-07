@@ -49,7 +49,7 @@ export default function InsetList() {
         aria-label="contacts"
       >
         {users.map((user, index) => (
-          <ListItem disablePadding key={index} onClick={()=>navigate("/editarCuenta/"+user.user_id)} sx={{ borderBottom: "inset 1px black" }}>
+          <ListItem disablePadding key={index} onClick={()=>navigate("/editarusuario/"+user.user_id)} sx={{ borderBottom: "inset 1px black" }}>
             <ListItemButton>
               <ListItemIcon>
                 {user.us_admin===true?<StarIcon color="warning" />:<></>}

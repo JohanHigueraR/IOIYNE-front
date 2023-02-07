@@ -8,13 +8,13 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import {useNavigate} from 'react-router-dom'
 
-const pages = ['usuarios', 'clientes', 'productos', 'cotizaciones'];
+const adminPages = ['usuarios', 'clientes', 'productos', 'cotizaciones'];
+const managerPages =['clientes', 'productos', 'cotizaciones']
 
 // obtener el objeto del loggedUser del local storage
 let objectLoggedUser = localStorage.getItem("localLoggedUser");
@@ -26,7 +26,7 @@ if (objectLoggedUser) {
 
 console.log(objectLoggedUser)
 
-function ResponsiveAppBar({loggedUser}) {
+function ResponsiveAppBar() {
     const navigate = useNavigate()
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -98,8 +98,12 @@ function ResponsiveAppBar({loggedUser}) {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+              {objectLoggedUser.us_admin=== true? adminPages.map((page,index) => (
+                <MenuItem key={index} onClick={()=>{handleCloseNavMenu(); navigate("/"+page)}}>
+                  <Typography textAlign="center">{page}</Typography>
+                </MenuItem>
+              )):managerPages.map((page,index) => (
+                <MenuItem key={index} onClick={()=>{handleCloseNavMenu(); navigate("/"+page)}}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
@@ -125,15 +129,15 @@ function ResponsiveAppBar({loggedUser}) {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={()=>{handleCloseNavMenu(); navigate("/"+page)}}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
+          {objectLoggedUser.us_admin=== true? adminPages.map((page, index) => (
+                <MenuItem key={index} onClick={()=>{handleCloseNavMenu(); navigate("/"+page)}}>
+                  <Typography textAlign="center">{page}</Typography>
+                </MenuItem>
+              )):managerPages.map((page, index) => (
+                <MenuItem key={index} onClick={()=>{handleCloseNavMenu(); navigate("/"+page)}}>
+                  <Typography textAlign="center">{page}</Typography>
+                </MenuItem>
+              ))}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>

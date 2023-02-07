@@ -33,7 +33,13 @@ function App() {
       localStorage.setItem("validar", false)      // Si el usuario no esta loggeado, el valor de llave "validar" es false
     } else {
       localStorage.setItem("validar", true);     // Si el usuario esta loggeado, el valor de llave "validar" es true
-      localStorage.setItem("localLoggedUser", JSON.stringify(data));  // Almacenamos el objeto de usuario loggeado en local storage  como string
+      if(data === "cuenta bloqueada"){
+        localStorage.setItem("error", true)
+      }
+      else{
+        localStorage.setItem("localLoggedUser", JSON.stringify(data));  // Almacenamos el objeto de usuario loggeado en local storage  como string
+      }
+      
     }
 
   };
@@ -43,7 +49,7 @@ function App() {
       {localStorage.validar === "true" ? (
         <BrowserRouter>
           <ResponsiveAppBar
-            loggedUser={loggedUser}></ResponsiveAppBar>
+          ></ResponsiveAppBar>
           <Container>
             <Routes>
               <Route path="/" element={<Dashboard></Dashboard>}></Route>
@@ -92,6 +98,7 @@ function App() {
                       { value: "us_name", type: "text", label: "nombre" },
                       { value: "us_lastname", type: "text", label: "apellido" },
                     ]}
+                    selects={["administrador", "gestor"]}
                     loggedUser={loggedUser}
                   ></FormEdit>
                 }

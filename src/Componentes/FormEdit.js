@@ -46,7 +46,7 @@ export default function Formulario({ titulo, inputs, selects = false, loggedUser
       );
       const data = await response.json();
       data.map(
-        (dato, index) => dato.product_id == params.id && setInitalValues(dato)
+        (dato, index) => dato.product_id.toString() === params.id.toString() && setInitalValues(dato)
       );
     } else if (location.pathname === "/editarusuario/" + params.id) {
       setRuta("usuarios");
@@ -55,7 +55,7 @@ export default function Formulario({ titulo, inputs, selects = false, loggedUser
       );
       const data = await response.json();
       data.map(
-        (dato, index) => dato.user_id == params.id && setInitalValues(dato)
+        (dato, index) => dato.user_id.toString() === params.id.toString() && setInitalValues(dato)
       );
     } else if (location.pathname === "/editarcliente/" + params.id) {
       setRuta("clientes");
@@ -64,7 +64,7 @@ export default function Formulario({ titulo, inputs, selects = false, loggedUser
       );
       const data = await response.json();
       data.map(
-        (dato, index) => dato.client_id == params.id && setInitalValues(dato)
+        (dato, index) => dato.client_id.toString() === params.id.toString() && setInitalValues(dato)
       );
 
     }
@@ -73,7 +73,7 @@ export default function Formulario({ titulo, inputs, selects = false, loggedUser
     return () => {
       peticion();
     };
-  }, []);
+  },[]);
   return (
     <Container component="main" maxWidth="xs" className="contenedorFormulario">
       <Typography className="tituloFormulario">{titulo}</Typography>
@@ -135,9 +135,9 @@ export default function Formulario({ titulo, inputs, selects = false, loggedUser
                       type={input.type}
                       name={input.value}
                       focused
-                      // defaultValue={
-                      //   input.type !== "file" ? values[input.value] : ""
-                      // }
+                      defaultValue={
+                      input.type !== "file" ? values[input.value] : ""
+                       } 
                       onChange={handleChange}
                     ></CssTextField>
                   ))}
