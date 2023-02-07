@@ -11,45 +11,52 @@ import Cotizaciones from "./Componentes/Cotizaciones";
 import Formulario from "./Componentes/Formulario";
 import FormEdit from "./Componentes/FormEdit";
 import Factura from "./Componentes/Factura";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
+  
+  const [loginState, setLoggedUser] = useState(""); 
+  // En loggedUser vamos a almacenar los datos del usuario loggeado
 
+  const getSubmitLogin = async (logeado) => {
 
-  const [loggedUser, setLoggedUser] = useState("User not found");   // En loggedUser vamos a almacenar los datos del usuario loggeado
-
-  const validateLogin = async (logeado) => {
-
-    const response = await fetch("http://localhost:4000/login", {   // Esta ruta nos devuelve el objeto del usuario loggeado, si no existe, devuelve "User not found"
+    const response = await fetch("http://localhost:4000/login", {
+      // Esta ruta nos devuelve el objeto del usuario loggeado, si no existe, devuelve "User not found"
       method: "PUT",
-      body: JSON.stringify(logeado),                                // aqui le pasamos el email y la contraseña y validamos el hash
+      body: JSON.stringify(logeado), // aqui le pasamos el email y la contraseña y validamos el hash
       headers: { "Content-type": "application/json" },
     });
-
     const data = await response.json();
-    setLoggedUser(data);   // seteamos el usuario loggeado 
+    setLoggedUser(data); // seteamos el usuario loggeado
+  }
 
-    if (loggedUser === "User not found") {
-      localStorage.setItem("validar", false)      // Si el usuario no esta loggeado, el valor de llave "validar" es false
-    } else {
-      localStorage.setItem("validar", true);     // Si el usuario esta loggeado, el valor de llave "validar" es true
-      if(data === "cuenta bloqueada"){
-        localStorage.setItem("error", true)
-      }
-      else{
-        localStorage.setItem("localLoggedUser", JSON.stringify(data));  // Almacenamos el objeto de usuario loggeado en local storage  como string
-      }
+  const validateLogin = ()=>{
+
+
+    if(loginState === "cuenta bloqueada por dos horas"){
+      localStorage.setItem('loginState', loginState)
+    }
+    else if(loginState === ""){
       
     }
-
-  };
+    else if(loginState === "contraseña incorrecta"){
+      localStorage.setItem('loginState', loginState)
+    }
+    else{
+      localStorage.setItem('loginState', loginState)
+      localStorage.setItem('loginOk', 'true')
+    }
+  }
+  
+  useEffect(() => {
+    validateLogin()
+  });
 
   return (
     <>
-      {localStorage.validar === "true" ? (
+      { localStorage.loginSuccesful === 'true'? (
         <BrowserRouter>
-          <ResponsiveAppBar
-          ></ResponsiveAppBar>
+          <ResponsiveAppBar></ResponsiveAppBar>
           <Container>
             <Routes>
               <Route path="/" element={<Dashboard></Dashboard>}></Route>
@@ -99,7 +106,7 @@ function App() {
                       { value: "us_lastname", type: "text", label: "apellido" },
                     ]}
                     selects={["administrador", "gestor"]}
-                    loggedUser={loggedUser}
+                    
                   ></FormEdit>
                 }
               ></Route>
@@ -196,7 +203,7 @@ function App() {
           </Container>
         </BrowserRouter>
       ) : (
-        <Login validateLogin={validateLogin}></Login>
+        <Login getSubmitLogin={getSubmitLogin}></Login>
       )}
     </>
   );

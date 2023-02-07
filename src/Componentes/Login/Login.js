@@ -49,39 +49,49 @@ function Copyright(props) {
   );
 }
 
-// tema 
+// tema
 const theme = createTheme();
 
 // Creacion de componente login: La funcion validateLogin viene como prop desde app.js
-export default function Login({ validateLogin }) {
-
-  // Al cargar el componente, los valores de validar y del usuario son falsos
-  localStorage.setItem("localLoggedUser", false);
-  localStorage.setItem('validar', false);
-
+export default function Login({ getSubmitLogin }) {
+  localStorage.setItem('loginOk', false)
+  localStorage.setItem('loginState', false)
   // Se inician los valores del usario en vacio
   const [typedLogin, setLogin] = useState({
     us_email: "",
-    us_password: ""
+    us_password: "",
   });
-
   // Captura los valores tipeados en el campo de usuario y contraseña
   const handleChange = (e) => {
     setLogin({ ...typedLogin, [e.target.name]: e.target.value });
-  }
-
-  // Al presionar iniciar sesion, ejecuta la funcion definidia en app.js que llega al componente 
-  // del login por props, pasandole los datos tipeados por el usuario 
+  };
+  // Al presionar iniciar sesion, ejecuta la funcion definidia en app.js que llega al componente
+  // del login por props, pasandole los datos tipeados por el usuario
   const handleSubmit = (event) => {
     event.preventDefault();
-    validateLogin(typedLogin);
+    getSubmitLogin(typedLogin);
   };
-
 
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
-      {localStorage.error}<Alert severity="error" sx={{background:'#1d1d1d', color:'#C7E2FF', marginTop:'2rem', fontSize: '1rem'}}>Cuenta bloqueada por 2 horas</Alert>
+        {localStorage.loginState === "contraseña incorrecta" ||
+        "cuenta bloqueada por dos horas" ? (
+          <Alert
+            severity="error"
+            sx={{
+              background: "#1d1d1d",
+              color: "#C7E2FF",
+              marginTop: "2rem",
+              fontSize: "1rem",
+            }}
+          >
+            {localStorage.loginState}
+          </Alert>
+        ) : (
+          <></>
+        )}
+
         <CssBaseline />
         <Box
           sx={{
@@ -127,7 +137,6 @@ export default function Login({ validateLogin }) {
             >
               Iniciar Sesión
             </Button>
-
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />

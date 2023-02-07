@@ -31,7 +31,7 @@ const CssTextField = styled(TextField)({
     color: "red",
   },
 });
-export default function Formulario({ titulo, inputs, selects = false, loggedUser}) {
+export default function Formulario({ titulo, inputs, selects = false}) {
   const location = useLocation();
   const params = useParams();
   const [ruta, setRuta] = useState(null);
