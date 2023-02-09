@@ -5,42 +5,50 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { Autocomplete, TextField } from "@mui/material";
+import { Stack } from "@mui/system";
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
+  bgcolor: "#080215",
+  border: "2px solid white",
   boxShadow: 24,
   p: 4,
+  color: "white"
 };
-export function ModalQuotation({ handleSubmitProducts }) {
+export function ModalQuotation({ handleSubmitProducts, ident }) {
+
   const [product, setProduct] = useState("");
   const [quantity, setQuantity] = useState("1000");
+
   const handleChangeProducts = (e, newValue) => {
     if (newValue !== null) {
       setProduct(newValue);
     }
   };
+
   const handleChangeQuantity = (e) => {
     if (e.target.value !== null) {
-      setQuantity(e.target.value );
+      setQuantity(e.target.value);
     }
   };
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [products, setProducts] = useState([]);
+
   const loadProducts = async () => {
     const response = await fetch(
       `${process.env.REACT_APP_SERVER_URL}/products`
     );
     const data = await response.json();
     setProducts(
-      data.map(({ pd_name, pd_description, pd_price }) => {
+      data.map(({ product_id, pd_name, pd_description, pd_price }) => {
         return {
+          product_id,
           label: pd_name,
           pd_name,
           pd_description,
@@ -49,6 +57,21 @@ export function ModalQuotation({ handleSubmitProducts }) {
       })
     );
   };
+
+  const addReqProduct = async () => {
+    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/requestedproduct`, {
+      method: "POST",
+      body: JSON.stringify(
+        {
+          "product_id": product.product_id,
+          "qu_ident": ident,
+          "quantity": parseInt(quantity)
+        }
+      ),
+      headers: { "Content-type": "application/json" },
+    });
+  }
+
   useEffect(() => {
     loadProducts();
   }, []);
@@ -64,37 +87,51 @@ export function ModalQuotation({ handleSubmitProducts }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
+
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Seleccionar Productos
-          </Typography>
-          <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            options={products}
-            value={product}
-            sx={{ width: 300 }}
-            onChange={handleChangeProducts}
-            renderInput={(params) => <TextField {...params} label="Producto" />}
-          />
-          <TextField
-            label="Cantidad"
-            type="number"
-            variant="filled"
-            onChange={handleChangeQuantity}
-          ></TextField>
-          <Button
-            variant="contained"
-            onClick={() => {
-              handleSubmitProducts(product.pd_name, product.pd_description, quantity, product.pd_price);
-              handleClose();
-            }}
-            type="submit"
+          <Stack
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            spacing={2}
           >
-            Agregar producto
-          </Button>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Seleccionar Productos
+            </Typography>
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              options={products}
+              value={product}
+              sx={{ width: 300 }}
+              onChange={handleChangeProducts}
+              className="inputQuotModal"
+              renderInput={(params) => <TextField  {...params} label="Producto" focused />}
+            />
+            <TextField
+              label="Cantidad"
+              type="number"
+              variant="outlined"
+              onChange={handleChangeQuantity}
+              className="inputQuotModal"
+              focused
+            ></TextField>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                addReqProduct()
+                handleSubmitProducts(product.pd_name, product.pd_description, quantity, product.pd_price);
+                handleClose();
+              }}
+              type="submit"
+            >
+              Agregar producto
+            </Button>
+          </Stack>
         </Box>
       </Modal>
-    </div>
+
+    </div >
   );
 }
