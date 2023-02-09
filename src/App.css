@@ -2,6 +2,7 @@
   --color1: #080215;
   /* --color1: white */
   --color2: #C7E2FF;
+  --color3: #1976d2;
 }
 body{
   background-color: var(--color1) !important;
@@ -28,7 +29,7 @@ body{
   background-size: cover;
 }
 .titulos{
-  color: white;
+  color: #C7E2FF;
   font-size: 2rem !important;
   text-shadow: 1px 1px 2px blue;
 }
@@ -102,4 +103,28 @@ body{
   .no-print {
     display: none !important;
   }
+}
+.table{
+  background-color: var(--color1)!important;
+  border: solid 1px white;
+}
+.table th, td{
+  
+  color: white !important;
+}
+.Autocomplete input, label{
+  color: white !important; 
+}
+.Autocomplete{
+  background-color: var(--color3);
+  margin-left: 10px;
+}
+.SelectQuotation{
+  background-color: var(--color3);
+  height: 55px;
+  margin:0;
+  padding:0;
+  border: none;
+  color: white
+
 }

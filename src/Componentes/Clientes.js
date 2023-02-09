@@ -112,7 +112,6 @@ export default function Clientes() {
         }
       )
     );
-    console.log(clients);
   };
   useEffect(() => {
     loadClients();
