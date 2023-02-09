@@ -157,7 +157,7 @@ function ResponsiveAppBar({loginState, setLoginAux}) {
               onClose={handleCloseUserMenu}
             >
            
-                <MenuItem  onClick={()=>{navigate("/editarusuario/"+userLogin.user_id);window.location.reload()}} > 
+                <MenuItem  onClick={()=>{navigate("/editarusuariologeado/"+userLogin.user_id)}} > 
                 {/* // onClick={()=>console.log(objectLoggedUser.user_id)}> */
                   // Obtener el id del loggedUser desde el objeto obtenido del local storage
                 }

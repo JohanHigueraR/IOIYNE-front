@@ -13,6 +13,7 @@ import FormEdit from "./Componentes/FormEdit";
 import Factura from "./Componentes/Factura";
 import { useEffect, useState } from "react";
 import FormQuotations from './Componentes/FormQuotations'
+import FormEditCuenta from "./Componentes/FormEditCuenta";
 
 function App() {
   const [loginState, setLoggedUser] = useState("");
@@ -113,6 +114,25 @@ function App() {
                     ]}
                     selects={["administrador", "gestor"]}
                   ></FormEdit>
+                }
+              ></Route>
+               <Route
+                path="/editarusuariologeado/:id"
+                element={
+                  <FormEditCuenta
+                    titulo="Editar Usuario"
+                    inputs={[
+                      { value: "us_email", type: "text", label: "usuario" },
+                      {
+                        value: "us_password",
+                        type: "password",
+                        label: "contraseña",
+                      },
+                      { value: "us_name", type: "text", label: "nombre" },
+                      { value: "us_lastname", type: "text", label: "apellido" },
+                    ]}
+                    selects={["administrador", "gestor"]}
+                  ></FormEditCuenta>
                 }
               ></Route>
               <Route
