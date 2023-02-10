@@ -10,11 +10,11 @@ import { Autocomplete, Button, TextField, Typography, } from "@mui/material";
 import { ModalQuotation } from "./ModalQuotation";
 import { Stack } from "@mui/system";
 
-export default function FormQuotations(loginState) {
+export default function FormQuotations({ loginStateAux }) {
 
   // Cargar y setear datos de clientes desde la db
   const [clients, setClients] = useState([]);
-  console.log(loginState)
+  console.log(loginStateAux)
 
   const loadClients = async () => {
     const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/clients`);
@@ -59,23 +59,37 @@ export default function FormQuotations(loginState) {
     label: "Seleccione un cliente",
     email: "",
     dirección: "",
-    client_id: "",
   });
 
-  const handleChangeClients = async (event, newValue) => {
-    if (newValue !== null) {
-      setClient(newValue);
+  const userLogged = JSON.parse(loginStateAux)
+  const crearCotizacion = async () => {
+
+    if (client.label !== "Seleccione un cliente") {
+
       const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/quotations`, {
         method: "POST",
-        body:JSON.stringify(
+        body: JSON.stringify(
           {
             "qu_ident": parseInt(ident),
-            "user_id": parseInt(loginState.user_id),
+            "user_id": userLogged.user_id,
             "client_id": parseInt(client.client_id)
           }
         ),
         headers: { "Content-type": "application/json" },
       });
+    } else {
+      console.log('entrando al else')
+    }
+  }
+
+  useEffect(() => {
+    crearCotizacion()
+  }, [client])
+
+
+  const handleChangeClients = async (event, newValue) => {
+    if (newValue !== null) {
+      setClient(newValue);
     }
   };
 
@@ -100,8 +114,8 @@ export default function FormQuotations(loginState) {
 
   // Estados necesarios para el calculo de precios de la cotizacion 
   const [subTotal, setSubTotal] = useState("");
-  const [total, setTotal] = useState("");
-  const [descuento, setDescuento] = useState("");
+  const [total, setTotal] = useState(subTotal);
+  const [descuento, setDescuento] = useState(0);
   const [tipoDescuento, setTipoDescuento] = useState("Tipo de descuento");
 
 
@@ -121,6 +135,13 @@ export default function FormQuotations(loginState) {
         .map(({ precio, cantidad }) => precio * cantidad)
         .reduce((sum, i) => sum + i, 0)
     );
+
+    setTotal(
+      requiredProducts
+        .map(({ precio, cantidad }) => precio * cantidad)
+        .reduce((sum, i) => sum + i, 0)
+    );
+
     if (tipoDescuento === "Porcentual") {
       setTotal(subTotal - (subTotal * descuento / 100))
     } else if (tipoDescuento === "Por valor") {
@@ -193,7 +214,7 @@ export default function FormQuotations(loginState) {
               </TableCell>
               <TableCell align="center" colSpan={1}>
                 {client.label !== "Seleccione un cliente" ?
-                  <ModalQuotation disabledident={ident}
+                  <ModalQuotation disabled ident={ident}
                     handleSubmitProducts={handleSubmitProducts}
                   ></ModalQuotation> : <></>}
               </TableCell>

@@ -55,7 +55,7 @@ const theme = createTheme();
 // Creacion de componente login: La funcion validateLogin viene como prop desde app.js
 export default function Login({ getSubmitLogin, loginStateAux }) {
   console.log(loginStateAux)
-  localStorage.setItem('loginState', 'false')
+
   const [typedLogin, setLogin] = useState({
     us_email: "",
     us_password: "",

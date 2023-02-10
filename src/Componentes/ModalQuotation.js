@@ -69,8 +69,11 @@ export function ModalQuotation({ handleSubmitProducts, ident }) {
   const handleClose = () => setOpen(false);
 
 
+
+
   // Crear productos con su respectiva cantidad en la db
   const addReqProduct = async () => {
+
     const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/requestedproduct`, {
       method: "POST",
       body: JSON.stringify(
@@ -83,6 +86,7 @@ export function ModalQuotation({ handleSubmitProducts, ident }) {
       headers: { "Content-type": "application/json" },
     });
   }
+
 
 
   // Cargar productos al desplegar el modal
