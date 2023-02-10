@@ -14,6 +14,7 @@ import Factura from "./Componentes/Factura";
 import { useEffect, useState } from "react";
 import FormQuotations from './Componentes/FormQuotations'
 import FormEditCuenta from "./Componentes/FormEditCuenta";
+import FormEditQuotations from './Componentes/FormEditQuotations'
 
 function App() {
   const [loginState, setLoggedUser] = useState("");
@@ -76,6 +77,10 @@ function App() {
               <Route
                 path="/crearcotizacion"
                 element={<FormQuotations loginStateAux={loginStateAux}></FormQuotations>}
+              ></Route>
+              <Route
+                path="/editarcotizacion/:id"
+                element={<FormEditQuotations loginStateAux={loginStateAux}></FormEditQuotations>}
               ></Route>
               <Route
                 path="/crearusuario"

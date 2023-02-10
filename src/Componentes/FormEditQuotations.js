@@ -14,7 +14,6 @@ export default function FormQuotations({ loginStateAux }) {
 
   // Cargar y setear datos de clientes desde la db
   const [clients, setClients] = useState([]);
-  console.log(loginStateAux)
 
   const loadClients = async () => {
     const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/clients`);
@@ -78,11 +77,9 @@ export default function FormQuotations({ loginStateAux }) {
         ),
         headers: { "Content-type": "application/json" },
       });
-    } else {
-      console.log('entrando al else')
-    }
+    } 
   }
-  const createFinalQuotation = async () => {
+  const EditQuotation = async () => {
 
     if (client.label !== "Seleccione un cliente") {
 
@@ -96,9 +93,8 @@ export default function FormQuotations({ loginStateAux }) {
         ),
         headers: { "Content-type": "application/json" },
       });
-    } else {
-      console.log('entrando al else')
-    }
+    } 
+  
   }
 
   useEffect(() => {
@@ -188,8 +184,8 @@ export default function FormQuotations({ loginStateAux }) {
         justifyContent="space-between"
         alignItems="flex-end"
         spacing={2}>
-        <Typography className="titulos" sx={{ marginTop: '3rem' }}>Crear cotización</Typography>
-        <Typography sx={{ marginTop: '4rem', color: "#C7E2FF", fontSize: '1.5rem' }}>{"Ref" + " " + ident}</Typography>
+        <Typography className="titulos" sx={{ marginTop: '3rem' }}>Editar cotización</Typography>
+        <Typography sx={{ marginTop: '4rem', color: "#C7E2FF", fontSize: '1.5rem' }}>{"Ref " + ident}</Typography>
       </Stack>
       <TableContainer component={Paper} className="table">
         <Table sx={{ minWidth: 700 }} aria-label="spanning table">
@@ -300,7 +296,7 @@ export default function FormQuotations({ loginStateAux }) {
         alignItems="center"
         spacing={2}>
 
-        <Button variant="contained" sx={{ marginTop: '10px' }} onClick={createFinalQuotation}>Crear</Button>
+        <Button variant="contained" sx={{ marginTop: '10px' }} onClick={EditQuotation}>Guardar Cambios</Button>
       </Stack>
     </>
   );

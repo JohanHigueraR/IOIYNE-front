@@ -87,15 +87,13 @@ export default function Cotizaciones() {
   const [quotations, setQuotations] = useState([]);
 
   const getBillId = (event) => {
-    var id = event.currentTarget.getAttribute("data-id");
-    console.log(id)
-    navigate("/")
+    var id = event.currentTarget.getAttribute("data-id")
+    navigate("/editarcotizacion/"+id)
   }
 
   const loadQuotations = async () => {
     const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/quotations`);
     const data = await response.json();
-    console.log(data)
     setQuotations(
       data.map(
         ({
