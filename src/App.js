@@ -75,7 +75,7 @@ function App() {
               ></Route>
               <Route
                 path="/crearcotizacion"
-                element={<FormQuotations></FormQuotations>}
+                element={<FormQuotations loginState={loginState}></FormQuotations>}
               ></Route>
               <Route
                 path="/crearusuario"

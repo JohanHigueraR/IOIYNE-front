@@ -6,6 +6,8 @@ import Modal from "@mui/material/Modal";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { Autocomplete, TextField } from "@mui/material";
 import { Stack } from "@mui/system";
+
+// Estilos del modal
 const style = {
   position: "absolute",
   top: "50%",
@@ -18,26 +20,11 @@ const style = {
   p: 4,
   color: "white"
 };
+
+
 export function ModalQuotation({ handleSubmitProducts, ident }) {
 
-  const [product, setProduct] = useState("");
-  const [quantity, setQuantity] = useState("1000");
-
-  const handleChangeProducts = (e, newValue) => {
-    if (newValue !== null) {
-      setProduct(newValue);
-    }
-  };
-
-  const handleChangeQuantity = (e) => {
-    if (e.target.value !== null) {
-      setQuantity(e.target.value);
-    }
-  };
-
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  // Cargar y setear productos para autocomplete
   const [products, setProducts] = useState([]);
 
   const loadProducts = async () => {
@@ -58,6 +45,31 @@ export function ModalQuotation({ handleSubmitProducts, ident }) {
     );
   };
 
+
+  // Capturar cambios de los campos del formulario de producto y cantidad
+  const [product, setProduct] = useState("");
+  const [quantity, setQuantity] = useState("1000");
+
+  const handleChangeProducts = (e, newValue) => {
+    if (newValue !== null) {
+      setProduct(newValue);
+    }
+  };
+
+  const handleChangeQuantity = (e) => {
+    if (e.target.value !== null) {
+      setQuantity(e.target.value);
+    }
+  };
+
+
+  // Campos necesarios para el majeo del modal
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+
+  // Crear productos con su respectiva cantidad en la db
   const addReqProduct = async () => {
     const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/requestedproduct`, {
       method: "POST",
@@ -72,9 +84,12 @@ export function ModalQuotation({ handleSubmitProducts, ident }) {
     });
   }
 
+
+  // Cargar productos al desplegar el modal
   useEffect(() => {
     loadProducts();
   }, []);
+
 
   return (
     <div>

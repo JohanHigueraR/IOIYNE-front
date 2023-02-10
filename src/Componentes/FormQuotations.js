@@ -6,18 +6,15 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import {
-  Autocomplete,
-  Button,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Autocomplete, Button, TextField, Typography, } from "@mui/material";
 import { ModalQuotation } from "./ModalQuotation";
 import { Stack } from "@mui/system";
 
-export default function SpanningTable() {
+export default function FormQuotations(loginState) {
 
+  // Cargar y setear datos de clientes desde la db
   const [clients, setClients] = useState([]);
+  console.log(loginState)
 
   const loadClients = async () => {
     const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/clients`);
@@ -45,6 +42,9 @@ export default function SpanningTable() {
     );
   };
 
+
+  // Cargar y setear el valor de la ultima cotizacion y sumarle uno para mostrar el proximo valor a ser cargado en la db
+  // la ident se debe enviar tambien al formulario de productos ya que se debe asociar cada producto a una referencia de cotizacion.
   const [ident, setIdent] = useState(" ");
 
   const loadIdent = async () => {
@@ -54,19 +54,37 @@ export default function SpanningTable() {
   };
 
 
-  const [requiredProducts, setRequiredProducts] = useState([]);
+  // Capturar los datos del cliente desde el formulario de cotizacion 
   const [client, setClient] = useState({
-    label: "",
+    label: "Seleccione un cliente",
     email: "",
     dirección: "",
+    client_id: "",
   });
 
-  const handleChangeClients = (event, newValue) => {
+  const handleChangeClients = async (event, newValue) => {
     if (newValue !== null) {
       setClient(newValue);
+      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/quotations`, {
+        method: "POST",
+        body:JSON.stringify(
+          {
+            "qu_ident": parseInt(ident),
+            "user_id": parseInt(loginState.user_id),
+            "client_id": parseInt(client.client_id)
+          }
+        ),
+        headers: { "Content-type": "application/json" },
+      });
     }
   };
 
+
+  // Capturar los productos enviados desde el modal para añadir productos
+  const [requiredProducts, setRequiredProducts] = useState([]);
+
+
+  // Esta funcion se pasa al modal por props
   const handleSubmitProducts = (nombre, descripcion, cantidad, precio) => {
     setRequiredProducts([
       ...requiredProducts,
@@ -79,11 +97,15 @@ export default function SpanningTable() {
     ]);
   };
 
+
+  // Estados necesarios para el calculo de precios de la cotizacion 
   const [subTotal, setSubTotal] = useState("");
   const [total, setTotal] = useState("");
   const [descuento, setDescuento] = useState("");
   const [tipoDescuento, setTipoDescuento] = useState("Tipo de descuento");
 
+
+  // Capturar descuento (tipo y valor)
   const handleChangeType = (event) => {
     setTipoDescuento(event.target.value);
   };
@@ -91,6 +113,8 @@ export default function SpanningTable() {
     setDescuento(event.target.value);
   };
 
+
+  // Calcular precio unitario por cantidad, descuentos, suntotal y total
   const totals = () => {
     setSubTotal(
       requiredProducts
@@ -104,15 +128,17 @@ export default function SpanningTable() {
     }
   };
 
+
+  // Escuchar los cambios en el componente para renderizar valores de productos y totales
   useEffect(() => {
     totals();
   }, [requiredProducts, descuento]);
 
+  // Traer informacion requerida de la db al cargar el componente
   useEffect(() => {
     loadClients();
     loadIdent();
   }, []);
-
 
 
   return (
@@ -144,7 +170,7 @@ export default function SpanningTable() {
             </TableRow>
             <TableRow>
               <TableCell colSpan={2} sx={{ padding: 0 }}>
-                {client.label === "" ?
+                {client.label === "Seleccione un cliente" ?
                   <Autocomplete
                     disablePortal
                     id="combo-box-demo"
@@ -166,7 +192,7 @@ export default function SpanningTable() {
                 {client.cl_address}
               </TableCell>
               <TableCell align="center" colSpan={1}>
-                {client.label !== "" ?
+                {client.label !== "Seleccione un cliente" ?
                   <ModalQuotation disabledident={ident}
                     handleSubmitProducts={handleSubmitProducts}
                   ></ModalQuotation> : <></>}
@@ -211,14 +237,14 @@ export default function SpanningTable() {
               </TableCell>
               <TableCell sx={{ padding: "0" }} align="center">
                 {tipoDescuento !== "Tipo de descuento" ?
-                <TextField
-                  sx={{ width: "120px" }}
-                  label="Valor"
-                  variant="filled"
-                  type="number"
-                  onChange={handleChangeValue}
-                  className="Autocomplete TextField"
-                ></TextField>:<></>}
+                  <TextField
+                    sx={{ width: "120px" }}
+                    label="Valor"
+                    variant="filled"
+                    type="number"
+                    onChange={handleChangeValue}
+                    className="Autocomplete TextField"
+                  ></TextField> : <></>}
               </TableCell>
             </TableRow>
             <TableRow>
