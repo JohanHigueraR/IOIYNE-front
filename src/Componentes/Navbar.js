@@ -20,7 +20,6 @@ const managerPages =['clientes', 'productos', 'cotizaciones']
 
 function ResponsiveAppBar({loginState, setLoginAux}) {
   const userLogin = JSON.parse(loginState)
-  console.log(userLogin)
   const navigate = useNavigate()
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] =useState(null);

@@ -6,11 +6,21 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Autocomplete, Button, TextField, Typography, } from "@mui/material";
+import {
+  Autocomplete,
+  Button,
+  ButtonGroup,
+  IconButton,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { ModalQuotation } from "./ModalQuotation";
 import { Stack } from "@mui/system";
+import { useParams } from "react-router-dom";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function FormQuotations({ loginStateAux }) {
+  const params = useParams();
 
   // Cargar y setear datos de clientes desde la db
   const [clients, setClients] = useState([]);
@@ -41,77 +51,68 @@ export default function FormQuotations({ loginStateAux }) {
     );
   };
 
-
   // Cargar y setear el valor de la ultima cotizacion y sumarle uno para mostrar el proximo valor a ser cargado en la db
   // la ident se debe enviar tambien al formulario de productos ya que se debe asociar cada producto a una referencia de cotizacion.
   const [ident, setIdent] = useState("");
 
-  const loadIdent = async () => {
-    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/quotations/ident`);
-    const data = await response.json();
-    setIdent(parseInt(data.qu_ident) + 1); 
-   
-  };
-
-
-  // Capturar los datos del cliente desde el formulario de cotizacion 
+  // Capturar los datos del cliente desde el formulario de cotizacion
   const [client, setClient] = useState({
     label: "Seleccione un cliente",
-    email: "",
-    dirección: "",
+    cl_email: "",
+    cl_address: "",
   });
 
-  const userLogged = JSON.parse(loginStateAux)
-  const createQuotation = async () => {
-
-    if (client.label !== "Seleccione un cliente") {
-
-       await fetch(`${process.env.REACT_APP_SERVER_URL}/quotations`, {
-        method: "POST",
-        body: JSON.stringify(
-          {
-            "qu_ident": parseInt(ident),
-            "user_id": userLogged.user_id,
-            "client_id": parseInt(client.client_id)
-          }
-        ),
-        headers: { "Content-type": "application/json" },
-      });
-    } 
-  }
-  const EditQuotation = async () => {
-
-    if (client.label !== "Seleccione un cliente") {
-
-       await fetch(`${process.env.REACT_APP_SERVER_URL}/quotations`, {
+  const getQuotationForEdit = async () => {
+    const response = await fetch(
+      `${process.env.REACT_APP_SERVER_URL}/quotations/edit`,
+      {
         method: "PUT",
-        body: JSON.stringify(
-          {
-            "qu_value": total,
-            "qu_ident": parseInt(ident)
-          }
-        ),
+        body: JSON.stringify({
+          qu_ident: params.id,
+        }),
+        headers: { "Content-type": "application/json" },
+      }
+    );
+    const data = await response.json();
+    
+    setClient({
+      label: data[0].cl_name + " " + data[0].cl_lastname,
+      cl_email: data[0].cl_email,
+      cl_address: data[0].cl_address,
+    });
+    setRequiredProducts(
+      data.map(({ pd_price, pd_description, pd_name, quantity, product_id }) => {
+        return {
+          nombre: pd_name,
+          descripcion: pd_description,
+          cantidad: quantity,
+          precio: pd_price,
+          id: product_id
+        };
+      })
+    );
+  };
+
+  const EditQuotation = async () => {
+    if (client.label !== "Seleccione un cliente") {
+      await fetch(`${process.env.REACT_APP_SERVER_URL}/quotations`, {
+        method: "PUT",
+        body: JSON.stringify({
+          qu_value: total,
+          qu_ident: parseInt(ident),
+        }),
         headers: { "Content-type": "application/json" },
       });
-    } 
-  
-  }
-
-  useEffect(() => {
-    createQuotation()
-  }, [client])
-
-
+    }
+  };
   const handleChangeClients = async (event, newValue) => {
     if (newValue !== null) {
       setClient(newValue);
     }
   };
 
-
   // Capturar los productos enviados desde el modal para añadir productos
   const [requiredProducts, setRequiredProducts] = useState([]);
-
 
   // Esta funcion se pasa al modal por props
   const handleSubmitProducts = (nombre, descripcion, cantidad, precio) => {
@@ -126,13 +127,11 @@ export default function FormQuotations({ loginStateAux }) {
     ]);
   };
 
-
-  // Estados necesarios para el calculo de precios de la cotizacion 
+  // Estados necesarios para el calculo de precios de la cotizacion
   const [subTotal, setSubTotal] = useState("");
   const [total, setTotal] = useState(subTotal);
   const [descuento, setDescuento] = useState(0);
   const [tipoDescuento, setTipoDescuento] = useState("Tipo de descuento");
-
 
   // Capturar descuento (tipo y valor)
   const handleChangeType = (event) => {
@@ -141,7 +140,6 @@ export default function FormQuotations({ loginStateAux }) {
   const handleChangeValue = (event) => {
     setDescuento(event.target.value);
   };
-
 
   // Calcular precio unitario por cantidad, descuentos, suntotal y total
   const totals = () => {
@@ -158,11 +156,22 @@ export default function FormQuotations({ loginStateAux }) {
     );
 
     if (tipoDescuento === "Porcentual") {
-      setTotal(subTotal - (subTotal * descuento / 100))
+      setTotal(subTotal - (subTotal * descuento) / 100);
     } else if (tipoDescuento === "Por valor") {
-      setTotal(subTotal - descuento)
+      setTotal((subTotal - descuento).toLocaleString('en-IN'));
     }
   };
+  const handleRemoveProduct = async(product) => {
+    setRequiredProducts(requiredProducts.filter((item) => item !== product));
+    await fetch(`${process.env.REACT_APP_SERVER_URL}/requestedproduct`, {
+      method: "DELETE",
+      body: JSON.stringify({
+        product_id: product.id,
+        qu_ident: params.id,
+      }),
+      headers: { "Content-type": "application/json" },
+    });
+  }
 
 
   // Escuchar los cambios en el componente para renderizar valores de productos y totales
@@ -173,9 +182,8 @@ export default function FormQuotations({ loginStateAux }) {
   // Traer informacion requerida de la db al cargar el componente
   useEffect(() => {
     loadClients();
-    loadIdent();
+    getQuotationForEdit();
   }, []);
-
 
   return (
     <>
@@ -183,9 +191,16 @@ export default function FormQuotations({ loginStateAux }) {
         direction="row"
         justifyContent="space-between"
         alignItems="flex-end"
-        spacing={2}>
-        <Typography className="titulos" sx={{ marginTop: '3rem' }}>Editar cotización</Typography>
-        <Typography sx={{ marginTop: '4rem', color: "#C7E2FF", fontSize: '1.5rem' }}>{"Ref " + ident}</Typography>
+        spacing={2}
+      >
+        <Typography className="titulos" sx={{ marginTop: "3rem" }}>
+          Editar cotización
+        </Typography>
+        <Typography
+          sx={{ marginTop: "4rem", color: "#C7E2FF", fontSize: "1.5rem" }}
+        >
+          {"Ref " + params.id}
+        </Typography>
       </Stack>
       <TableContainer component={Paper} className="table">
         <Table sx={{ minWidth: 700 }} aria-label="spanning table">
@@ -203,23 +218,23 @@ export default function FormQuotations({ loginStateAux }) {
               <TableCell align="center" colSpan={1}>
                 Añadir productos
               </TableCell>
+              <TableCell></TableCell>
             </TableRow>
             <TableRow>
               <TableCell colSpan={2} sx={{ padding: 0 }}>
-                {client.label === "Seleccione un cliente" ?
-                  <Autocomplete
-                    disablePortal
-                    id="combo-box-demo"
-                    value={client}
-                    options={clients}
-                    sx={{ width: 300 }}
-                    className="Autocomplete"
-                    focused
-                    renderInput={(params) => (
-                      <TextField {...params} label="" variant="filled" />
-                    )}
-                    onChange={handleChangeClients}
-                  /> : client.label}
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+                  value={client}
+                  options={clients}
+                  sx={{ width: 300 }}
+                  className="Autocomplete"
+                  focused
+                  renderInput={(params) => (
+                    <TextField {...params} label="" variant="filled" />
+                  )}
+                  onChange={handleChangeClients}
+                />
               </TableCell>
               <TableCell align="center" colSpan={1}>
                 {client.cl_email}
@@ -228,11 +243,18 @@ export default function FormQuotations({ loginStateAux }) {
                 {client.cl_address}
               </TableCell>
               <TableCell align="center" colSpan={1}>
-                {client.label !== "Seleccione un cliente" ?
-                  <ModalQuotation disabled ident={ident}
+                {client.label !== "Seleccione un cliente" ? (
+                  <ModalQuotation
+                    disabled
+                    ident={ident}
                     handleSubmitProducts={handleSubmitProducts}
-                  ></ModalQuotation> : <></>}
+                  ></ModalQuotation>
+                  
+                ) : (
+                  <></>
+                )}
               </TableCell>
+              <TableCell></TableCell>
             </TableRow>
             <TableRow>
               <TableCell colSpan={1}>Producto</TableCell>
@@ -240,6 +262,7 @@ export default function FormQuotations({ loginStateAux }) {
               <TableCell align="center">Cantidad</TableCell>
               <TableCell align="center">Precio por unidad</TableCell>
               <TableCell align="center">Precio total</TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -248,31 +271,49 @@ export default function FormQuotations({ loginStateAux }) {
                 <TableCell>{requiredProduct.nombre}</TableCell>
                 <TableCell>{requiredProduct.descripcion}</TableCell>
                 <TableCell align="center">{requiredProduct.cantidad}</TableCell>
-                <TableCell align="center">{requiredProduct.precio}</TableCell>
+                <TableCell align="center">$ {requiredProduct.precio.toLocaleString()}</TableCell>
                 <TableCell align="center">
-                  {requiredProduct.precio * requiredProduct.cantidad}
+                  $ {requiredProduct.precio * requiredProduct.cantidad}
+                </TableCell>
+                <TableCell align="center">
+                  <IconButton
+                    
+                    aria-label="delete"
+                    size="small"
+                    onClick={() => handleRemoveProduct(requiredProduct)}
+                  >
+                    <DeleteIcon fontSize="inherit" />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}
             <TableRow>
               <TableCell rowSpan={3} />
               <TableCell colSpan={3}>Subtotal</TableCell>
-              <TableCell align="center">{subTotal}</TableCell>
+              <TableCell align="center">$ {subTotal}</TableCell>
+              <TableCell></TableCell>
             </TableRow>
             <TableRow>
               <TableCell colSpan={1}>Descuento</TableCell>
               <TableCell sx={{ padding: "0" }} align="center">
-                {requiredProducts.length !== 0 ?
-                  <select required onChange={handleChangeType} className="SelectQuotation">
+                {requiredProducts.length !== 0 ? (
+                  <select
+                    required
+                    onChange={handleChangeType}
+                    className="SelectQuotation"
+                  >
                     <option selected disabled>
                       Tipo de descuento
                     </option>
                     <option>Porcentual</option>
                     <option>Por valor</option>
-                  </select> : <></>}
+                  </select>
+                ) : (
+                  <></>
+                )}
               </TableCell>
               <TableCell sx={{ padding: "0" }} align="center">
-                {tipoDescuento !== "Tipo de descuento" ?
+                {tipoDescuento !== "Tipo de descuento" ? (
                   <TextField
                     sx={{ width: "120px" }}
                     label="Valor"
@@ -280,12 +321,18 @@ export default function FormQuotations({ loginStateAux }) {
                     type="number"
                     onChange={handleChangeValue}
                     className="Autocomplete TextField"
-                  ></TextField> : <></>}
+                  ></TextField>
+                ) : (
+                  <></>
+                )}
               </TableCell>
+              <TableCell></TableCell>
+              <TableCell></TableCell>
             </TableRow>
             <TableRow>
               <TableCell colSpan={3}>Total</TableCell>
-              <TableCell align="center">{total}</TableCell>
+              <TableCell align="center">$ {total}</TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableBody>
         </Table>
@@ -293,10 +340,17 @@ export default function FormQuotations({ loginStateAux }) {
       <Stack
         direction="row"
         justifyContent="flex-end"
-        alignItems="center"
-        spacing={2}>
-
-        <Button variant="contained" sx={{ marginTop: '10px' }} onClick={EditQuotation}>Guardar Cambios</Button>
+        alignItems="flex-start"
+        spacing={2}
+        sx={{marginTop: '0.8rem'}}
+      >
+        <ButtonGroup
+          variant="contained"
+          aria-label="outlined primary button group"
+        >
+          <Button color="warning">Cancelar</Button>
+          <Button>Guardar</Button>
+        </ButtonGroup>
       </Stack>
     </>
   );

@@ -189,7 +189,7 @@ export default function FormQuotations({ loginStateAux }) {
         alignItems="flex-end"
         spacing={2}>
         <Typography className="titulos" sx={{ marginTop: '3rem' }}>Crear cotización</Typography>
-        <Typography sx={{ marginTop: '4rem', color: "#C7E2FF", fontSize: '1.5rem' }}>{"Ref" + " " + ident}</Typography>
+        <Typography sx={{ marginTop: '4rem', color: "#C7E2FF", fontSize: '1.5rem' }}>{"Ref " + ident}</Typography>
       </Stack>
       <TableContainer component={Paper} className="table">
         <Table sx={{ minWidth: 700 }} aria-label="spanning table">
