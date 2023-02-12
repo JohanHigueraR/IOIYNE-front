@@ -43,6 +43,7 @@ function DashboardAux() {
     return datesAndDays;
   };
   const week = getWeek();
+  console.log(week)
   const labels = week.map((day,index)=> day.day);
   const [valores, setValores] = useState([]); // Inicializa el estado "valores" con un arreglo vacío y la función "setValores" para actualizarlo
 
@@ -71,7 +72,7 @@ function DashboardAux() {
   }, []); // El segundo argumento de "useEffect" es un arreglo vacío que indica que se ejecutará solo una vez
   
   useEffect(() => {
-    console.log(valores);
+
   }, [valores]);
 
   return <div>

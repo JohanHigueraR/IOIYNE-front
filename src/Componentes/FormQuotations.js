@@ -6,11 +6,14 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Autocomplete, Button, TextField, Typography, } from "@mui/material";
+import { Autocomplete, Button, ButtonGroup, TextField, Typography, } from "@mui/material";
 import { ModalQuotation } from "./ModalQuotation";
 import { Stack } from "@mui/system";
+import { useNavigate } from "react-router-dom";
 
 export default function FormQuotations({ loginStateAux }) {
+
+  const navigate = useNavigate();
 
   // Cargar y setear datos de clientes desde la db
   const [clients, setClients] = useState([]);
@@ -45,13 +48,13 @@ export default function FormQuotations({ loginStateAux }) {
 
   // Cargar y setear el valor de la ultima cotizacion y sumarle uno para mostrar el proximo valor a ser cargado en la db
   // la ident se debe enviar tambien al formulario de productos ya que se debe asociar cada producto a una referencia de cotizacion.
-  const [ident, setIdent] = useState("");
+  const [ident, setIdent] = useState(1);
 
   const loadIdent = async () => {
     const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/quotations/ident`);
     const data = await response.json();
-    setIdent(parseInt(data.qu_ident) + 1); 
-   
+    setIdent(parseInt(data.qu_ident) + 1);
+
   };
 
 
@@ -67,7 +70,7 @@ export default function FormQuotations({ loginStateAux }) {
 
     if (client.label !== "Seleccione un cliente") {
 
-       await fetch(`${process.env.REACT_APP_SERVER_URL}/quotations`, {
+      await fetch(`${process.env.REACT_APP_SERVER_URL}/quotations`, {
         method: "POST",
         body: JSON.stringify(
           {
@@ -86,7 +89,7 @@ export default function FormQuotations({ loginStateAux }) {
 
     if (client.label !== "Seleccione un cliente") {
 
-       await fetch(`${process.env.REACT_APP_SERVER_URL}/quotations`, {
+      await fetch(`${process.env.REACT_APP_SERVER_URL}/quotations`, {
         method: "PUT",
         body: JSON.stringify(
           {
@@ -179,6 +182,25 @@ export default function FormQuotations({ loginStateAux }) {
     loadClients();
     loadIdent();
   }, []);
+
+  const sendEmail = async () => {
+
+    await fetch(`${process.env.REACT_APP_SERVER_URL}/email`, {
+      method: "POST",
+      body: JSON.stringify(
+        {
+          "qu_ident": parseInt(ident),
+          "us_name": userLogged.us_name,
+          "cl_name": client.label,
+          "cl_email": client.cl_email,
+          "cl_address": client.cl_address,
+          "qu_value": total
+
+        }
+      ),
+      headers: { "Content-type": "application/json" },
+    });
+  }
 
 
   return (
@@ -300,7 +322,11 @@ export default function FormQuotations({ loginStateAux }) {
         alignItems="center"
         spacing={2}>
 
-        <Button variant="contained" sx={{ marginTop: '10px' }} onClick={createFinalQuotation}>Crear</Button>
+        <ButtonGroup sx={{ marginTop: "10px" }} variant="contained" aria-label="outlined primary button group">
+          <Button onClick={() => navigate('/cotizaciones')} color='warning'>Cancelar</Button>
+          <Button onClick={sendEmail} color='success'>Enviar</Button>
+          <Button onClick={createFinalQuotation}>Crear</Button>
+        </ButtonGroup>
       </Stack>
     </>
   );
