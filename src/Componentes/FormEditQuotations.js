@@ -16,11 +16,12 @@ import {
 } from "@mui/material";
 import { ModalQuotation } from "./ModalQuotation";
 import { Stack } from "@mui/system";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function FormQuotations({ loginStateAux }) {
   const params = useParams();
+  const navigate= useNavigate();
 
   // Cargar y setear datos de clientes desde la db
   const [clients, setClients] = useState([]);
@@ -93,16 +94,17 @@ export default function FormQuotations({ loginStateAux }) {
     );
   };
 
-  const EditQuotation = async () => {
+  const editFinalQuotation = async () => {
     if (client.label !== "Seleccione un cliente") {
       await fetch(`${process.env.REACT_APP_SERVER_URL}/quotations`, {
         method: "PUT",
         body: JSON.stringify({
           qu_value: total,
-          qu_ident: parseInt(ident),
+          qu_ident: params.id,
         }),
         headers: { "Content-type": "application/json" },
       });
+      navigate("/cotizaciones")
     }
   };
   const handleChangeClients = async (event, newValue) => {
@@ -158,7 +160,7 @@ export default function FormQuotations({ loginStateAux }) {
     if (tipoDescuento === "Porcentual") {
       setTotal(subTotal - (subTotal * descuento) / 100);
     } else if (tipoDescuento === "Por valor") {
-      setTotal((subTotal - descuento).toLocaleString('en-IN'));
+      setTotal((subTotal - descuento));
     }
   };
   const handleRemoveProduct = async(product) => {
@@ -271,7 +273,7 @@ export default function FormQuotations({ loginStateAux }) {
                 <TableCell>{requiredProduct.nombre}</TableCell>
                 <TableCell>{requiredProduct.descripcion}</TableCell>
                 <TableCell align="center">{requiredProduct.cantidad}</TableCell>
-                <TableCell align="center">$ {requiredProduct.precio.toLocaleString()}</TableCell>
+                <TableCell align="center">$ {requiredProduct.precio}</TableCell>
                 <TableCell align="center">
                   $ {requiredProduct.precio * requiredProduct.cantidad}
                 </TableCell>
@@ -348,8 +350,8 @@ export default function FormQuotations({ loginStateAux }) {
           variant="contained"
           aria-label="outlined primary button group"
         >
-          <Button color="warning">Cancelar</Button>
-          <Button>Guardar</Button>
+          <Button color="warning" onClick={()=>navigate("/cotizacion")}>Cancelar</Button>
+          <Button onClick={editFinalQuotation}>Guardar</Button>
         </ButtonGroup>
       </Stack>
     </>

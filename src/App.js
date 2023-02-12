@@ -3,7 +3,6 @@ import Login from "./Componentes/Login/Login";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Container } from "@mui/material";
 import ResponsiveAppBar from "./Componentes/Navbar";
-import Dashboard from "./Componentes/Dashboard";
 import Clientes from "./Componentes/Clientes";
 import Productos from "./Componentes/Productos";
 import Usuarios from "./Componentes/Usuarios";
@@ -15,6 +14,7 @@ import { useEffect, useState } from "react";
 import FormQuotations from './Componentes/FormQuotations'
 import FormEditCuenta from "./Componentes/FormEditCuenta";
 import FormEditQuotations from './Componentes/FormEditQuotations'
+import DashboardAux from './Componentes/DashboardAux'
 
 function App() {
   const [loginState, setLoggedUser] = useState("");
@@ -63,7 +63,7 @@ function App() {
           <ResponsiveAppBar loginState={loginStateAux} setLoginAux={setLoginAux}></ResponsiveAppBar>
           <Container>
             <Routes>
-              <Route path="/" element={<Dashboard></Dashboard>}></Route>
+              <Route path="/" element={<DashboardAux></DashboardAux>}></Route>
               <Route path="/clientes" element={<Clientes></Clientes>}></Route>
               <Route
                 path="/productos"

@@ -19,7 +19,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useState, useEffect } from "react";
-import { data } from "./Dashboard";
+
 function CustomToolbar() {
   return (
     <GridToolbarContainer>
@@ -77,7 +77,7 @@ const columns = [
     field: "qu_value",
     headerName: "Valor",
     description: "This column has a value getter and is not sortable.",
-    width: 200,
+    width: 180,
   },
   
 ];
@@ -137,7 +137,7 @@ export default function Cotizaciones() {
       </Button>
       <Box sx={{ height: 400, width: "100%" }}>
         <DataGrid
-          key={data.id}
+          key={quotations}
           rows={quotations}
           columns={columns}
           pageSize={5}
