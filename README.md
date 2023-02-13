@@ -23,5 +23,5 @@ You may also see any lint errors in the console.
 
 ## Developed by
 
-[Johan Higuera](linkedin.com/in/johan-daniel-higuera-rodriguez-ba6593208) &
+[Johan Higuera](https://linkedin.com/in/johan-daniel-higuera-rodriguez-ba6593208) &
 [Simón López Calderón](https://www.linkedin.com/in/simonlopezcalderon/)
