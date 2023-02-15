@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
-import { Alert } from "@mui/material";
+import { Alert, Card, CardContent } from "@mui/material";
 
 // Estilos para el css text field
 const CssTextField = styled(TextField)({
@@ -31,23 +31,23 @@ const CssTextField = styled(TextField)({
 });
 
 // Logo
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https:/">
-        IOYNE
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+// function Copyright(props) {
+//   return (
+//     <Typography
+//       variant="body2"
+//       color="text.secondary"
+//       align="center"
+//       {...props}
+//     >
+//       {"Copyright © "}
+//       <Link color="inherit" href="https:/">
+//         IOYNE
+//       </Link>{" "}
+//       {new Date().getFullYear()}
+//       {"."}
+//     </Typography>
+//   );
+// }
 
 // tema
 const theme = createTheme();
@@ -74,8 +74,27 @@ export default function Login({ getSubmitLogin, loginStateAux }) {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        {loginStateAux === "contraseña incorrecta"|| loginStateAux === "cuenta bloqueada por dos horas"? (
+      <Container component="main" maxWidth="xs" height="100vh">
+
+        <Card id="cardLogin">
+          <CardContent>
+            <Typography sx={{ fontSize: 16 }} color="white" gutterBottom>
+              Nota del desarrollador
+            </Typography>
+            {/* <Typography sx={{ mb: 1.5 }} color="white">
+              Usuario para pruebas:
+            </Typography> */}
+            <Typography variant="body2">
+              Usuario: admin@admin.com
+              <br />
+              {'Contraseña: admin123'}
+            </Typography>
+          </CardContent>
+        </Card>
+
+
+
+        {loginStateAux === "contraseña incorrecta" || loginStateAux === "cuenta bloqueada por dos horas" ? (
           <Alert
             severity="error"
             sx={{
@@ -88,20 +107,19 @@ export default function Login({ getSubmitLogin, loginStateAux }) {
             {loginStateAux}
           </Alert>
         ) : (
-        <></>
+          <></>
         )}
 
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
           }}
         >
           <div className="logo">
-            <img src="./logo2.png" alt="" />
+            <img src="./logo2.png" alt="logo IOYNE" />
           </div>
 
           <Box
@@ -126,6 +144,7 @@ export default function Login({ getSubmitLogin, loginStateAux }) {
               className="textField"
               onChange={handleChange}
               name="us_password"
+              type="password"
             ></CssTextField>
 
             <Button
@@ -138,7 +157,6 @@ export default function Login({ getSubmitLogin, loginStateAux }) {
             </Button>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );

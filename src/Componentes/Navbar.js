@@ -1,4 +1,5 @@
-import {useState} from 'react';
+import React from 'react';
+import { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -10,19 +11,20 @@ import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+
+
 
 const adminPages = ['usuarios', 'clientes', 'productos', 'cotizaciones'];
-const managerPages =['clientes', 'productos', 'cotizaciones']
+const managerPages = ['clientes', 'productos', 'cotizaciones']
 
 // obtener el objeto del loggedUser del local storage
 
-function ResponsiveAppBar({loginState, setLoginAux}) {
+function ResponsiveAppBar({ loginState, setLoginAux }) {
   const userLogin = JSON.parse(loginState)
   const navigate = useNavigate()
   const [anchorElNav, setAnchorElNav] = useState(null);
-  const [anchorElUser, setAnchorElUser] =useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -39,11 +41,14 @@ function ResponsiveAppBar({loginState, setLoginAux}) {
     setAnchorElUser(null);
   };
 
+
+
   return (
-    <AppBar position="static" className='no-print'>
+
+    <AppBar position="fixed" className='no-print'>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <img className="iconNavbar" src='./logo3.png' onClick={() => navigate('/')} ></img>
           <Typography
             variant="h6"
             noWrap
@@ -91,18 +96,17 @@ function ResponsiveAppBar({loginState, setLoginAux}) {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {userLogin.us_admin=== true? adminPages.map((page,index) => (
-                <MenuItem key={index} onClick={()=>{handleCloseNavMenu(); navigate("/"+page)}}>
+              {userLogin.us_admin === true ? adminPages.map((page, index) => (
+                <MenuItem key={index} onClick={() => { handleCloseNavMenu(); navigate("/" + page) }}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
-              )):managerPages.map((page,index) => (
-                <MenuItem key={index} onClick={()=>{handleCloseNavMenu(); navigate("/"+page)}}>
+              )) : managerPages.map((page, index) => (
+                <MenuItem key={index} onClick={() => { handleCloseNavMenu(); navigate("/" + page) }}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
@@ -122,15 +126,15 @@ function ResponsiveAppBar({loginState, setLoginAux}) {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-          {userLogin.us_admin=== true? adminPages.map((page, index) => (
-                <MenuItem key={index} onClick={()=>{handleCloseNavMenu(); navigate("/"+page)}}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              )):managerPages.map((page, index) => (
-                <MenuItem key={index} onClick={()=>{handleCloseNavMenu(); navigate("/"+page)}}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
+            {userLogin.us_admin === true ? adminPages.map((page, index) => (
+              <MenuItem key={index} onClick={() => { handleCloseNavMenu(); navigate("/" + page) }}>
+                <Typography textAlign="center">{page}</Typography>
+              </MenuItem>
+            )) : managerPages.map((page, index) => (
+              <MenuItem key={index} onClick={() => { handleCloseNavMenu(); navigate("/" + page) }}>
+                <Typography textAlign="center">{page}</Typography>
+              </MenuItem>
+            ))}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
@@ -155,22 +159,21 @@ function ResponsiveAppBar({loginState, setLoginAux}) {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-           
-                <MenuItem  onClick={()=>{navigate("/editarusuariologeado/"+userLogin.user_id)}} > 
+
+              <MenuItem onClick={() => { navigate("/editarusuariologeado/" + userLogin.user_id) }} >
                 {/* // onClick={()=>console.log(objectLoggedUser.user_id)}> */
                   // Obtener el id del loggedUser desde el objeto obtenido del local storage
                 }
-                  <Typography textAlign="center">Cuenta</Typography>
-                </MenuItem>
-                <MenuItem>
-                  <Typography textAlign="center" onClick={() =>{setLoginAux(""); navigate("/"); localStorage.setItem("loginOk", "false")}}>Cerrar Sesión</Typography>
-                </MenuItem>
-            
+                <Typography textAlign="center">Cuenta</Typography>
+              </MenuItem>
+              <MenuItem>
+                <Typography textAlign="center" onClick={() => { setLoginAux(""); navigate("/"); localStorage.setItem("loginOk", "false") }}>Cerrar Sesión</Typography>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
       </Container>
-    </AppBar>
+    </AppBar >
   );
 }
 export default ResponsiveAppBar;

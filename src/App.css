@@ -10,8 +10,8 @@ body {
 }
 
 .logo img {
-  width: 23rem;
-  height: 18rem;
+  width: 20rem;
+  height: 15rem;
 }
 
 .textField {
@@ -164,8 +164,25 @@ label {
   color: white !important;
 }
 
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-    -webkit-appearance: none; 
-    margin: 0; 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.iconNavbar {
+  cursor: pointer;
+  width: 45px;
+  height: 45px;
+  padding-right: 1%;
+  padding-left: 7%;
+}
+
+#cardLogin {
+  height: 105px;
+  margin-top: 15px;
+  background-color: #2196f3;
+  color: white !important;
+  width: 300px;
+  margin-left: 50px; 
 }
