@@ -36,7 +36,7 @@ export default function Formulario({ titulo, inputs, selects = false }) {
   const location = useLocation();
   const [ruta, setRuta] = useState(null);
   
-  const peticion = async () => {
+  const peticion = () => {
     if (location.pathname === "/crearproducto") {
       setRuta("productos");
     } else if (location.pathname === "/crearusuario") {
@@ -46,9 +46,7 @@ export default function Formulario({ titulo, inputs, selects = false }) {
     }
   };
   useEffect(() => {
-    return () => {
       peticion();
-    };
   }, []);
   return (
     <Container component="main" maxWidth="xs" className="contenedorFormulario">
@@ -71,6 +69,7 @@ export default function Formulario({ titulo, inputs, selects = false }) {
           pd_price:""
         }}
         onSubmit={async (valores) => {
+          console.log(ruta)
           if (ruta === "productos") {
             await fetch(`${process.env.REACT_APP_SERVER_URL}/products`, {
               method: "POST",

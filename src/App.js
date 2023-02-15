@@ -16,6 +16,9 @@ import FormEditCuenta from "./Componentes/FormEditCuenta";
 import FormEditQuotations from './Componentes/FormEditQuotations'
 import DashboardAux from './Componentes/DashboardAux'
 
+//correo: ioyne.proyect@gmail.com
+//password: administrador123
+
 function App() {
   const [loginState, setLoggedUser] = useState("");
   // En loggedUser vamos a almacenar los datos del usuario loggeado
