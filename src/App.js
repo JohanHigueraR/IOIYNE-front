@@ -24,7 +24,7 @@ function App() {
   // En loggedUser vamos a almacenar los datos del usuario loggeado
 
   const getSubmitLogin = async (logeado) => {
-    const response = await fetch("http://localhost:4000/login", {
+    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/login`, {
       // Esta ruta nos devuelve el objeto del usuario loggeado, si no existe, devuelve "User not found"
       method: "PUT",
       body: JSON.stringify(logeado), // aqui le pasamos el email y la contraseña y validamos el hash
