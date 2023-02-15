@@ -72,7 +72,7 @@ function DashboardAux() {
   }, []); // El segundo argumento de "useEffect" es un arreglo vacío que indica que se ejecutará solo una vez
   
   useEffect(() => {
-    console.log(valores);
+
   }, [valores]);
 
   return <div>
