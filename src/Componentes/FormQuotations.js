@@ -17,7 +17,7 @@ export default function FormQuotations({ loginStateAux }) {
 
   // Cargar y setear datos de clientes desde la db
   const [clients, setClients] = useState([]);
-  console.log(loginStateAux)
+  
 
   const loadClients = async () => {
     const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/clients`);
@@ -82,7 +82,7 @@ export default function FormQuotations({ loginStateAux }) {
         headers: { "Content-type": "application/json" },
       });
     } else {
-      console.log('entrando al else')
+      
     }
   }
   const createFinalQuotation = async () => {
@@ -100,7 +100,7 @@ export default function FormQuotations({ loginStateAux }) {
         headers: { "Content-type": "application/json" },
       });
     } else {
-      console.log('entrando al else')
+      
     }
   }
 

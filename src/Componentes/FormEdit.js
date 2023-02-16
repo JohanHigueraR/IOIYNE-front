@@ -102,6 +102,7 @@ export default function FormEdit({ titulo, inputs, selects = false}) {
                 body: JSON.stringify(valores),
                 headers: { "Content-type": "application/json" },
               });
+              
               navigate("/" + ruta)
             }
           }}
@@ -143,7 +144,7 @@ export default function FormEdit({ titulo, inputs, selects = false}) {
                   {selects === false ? (
                     <></>
                   ) : (
-                    <select className="Select" required>
+                    <select className="Select" name="us_admin" onChange={handleChange} required>
                       <option selected disabled>
                         Seleccione una opción
                       </option>

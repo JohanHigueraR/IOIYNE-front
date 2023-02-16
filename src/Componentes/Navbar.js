@@ -161,9 +161,7 @@ function ResponsiveAppBar({ loginState, setLoginAux }) {
             >
 
               <MenuItem onClick={() => { navigate("/editarusuariologeado/" + userLogin.user_id) }} >
-                {/* // onClick={()=>console.log(objectLoggedUser.user_id)}> */
-                  // Obtener el id del loggedUser desde el objeto obtenido del local storage
-                }
+              
                 <Typography textAlign="center">Cuenta</Typography>
               </MenuItem>
               <MenuItem>

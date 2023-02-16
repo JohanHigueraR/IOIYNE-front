@@ -11,6 +11,7 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import { Box, Typography } from "@mui/material";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -22,7 +23,9 @@ ChartJS.register(
   Legend
 );
 
+
 function DashboardAux() {
+  
 
   const getWeek = () => {
     let datesAndDays = [];
@@ -45,7 +48,7 @@ function DashboardAux() {
   };
 
   const week = getWeek();
-  console.log(week)
+  
   const labels = week.map((day, index) => day.day);
   const [valores, setValores] = useState([]); // Inicializa el estado "valores" con un arreglo vacío y la función "setValores" para actualizarlo
 
@@ -62,14 +65,14 @@ function DashboardAux() {
         }
       );
       const data = await response.json(); // Espera a que la respuesta del servidor se convierta en formato JSON
-      console.log(data)
+      
       return data[0].sum === null ? 0 : data[0].sum; // Devuelve 0 si el valor "sum" es nulo, en otro caso devuelve "sum"
 
     });
 
     const values = await Promise.all(promises); // Espera a que todas las promesas se resuelvan
     setValores(values); // Actualiza el estado "valores" con los valores devueltos
-    console.log('console valores despues del fetch', values)
+
   };
 
   useEffect(() => {
@@ -80,7 +83,10 @@ function DashboardAux() {
 
   }, [valores]);
 
-  return <div>
+  return (
+  <>
+      <Typography className="titulos" sx={{marginTop: '8rem'}}>Ventas de los últimos 7 días</Typography>
+    <Box >
     <Line
       data={{
         labels,
@@ -89,14 +95,42 @@ function DashboardAux() {
             fill: true,
             label: 'Ventas',
             data: week.map((day, index) => valores[index]),
-            borderColor: 'rgb(53, 162, 235)',
-            backgroundColor: 'rgba(53, 162, 235, 0.5)',
+            borderColor: 'rgb(14, 14, 115)',
+            backgroundColor: '#1976d2',
+            pointBackgroundColor: 'rgb(58, 51, 159)',
+            pointRadius: 8,
+                
           },
         ],
-      }}>
+      }}
+      options={{
+        responsive:true,
+        scales: {
+          y: {
+            grid: {
+              color: 'rgb(82, 81, 81)', // Cambiar el color aquí}
+            },
+            ticks: {
+              color: 'white', // Cambiar el color aquí
+            },
+          },
+          x: {
+            grid: {
+              color: 'rgb(82, 81, 81)', // Cambiar el color aquí
+            },
+            ticks: {
+              color: 'white', // Cambiar el color aquí
+            },
+          },
+        },
+        
+      }
+      }>
 
     </Line>
-  </div>;
+    </Box>
+    </>
+  )
 }
 
 export default DashboardAux;

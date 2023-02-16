@@ -69,7 +69,7 @@ export default function Formulario({ titulo, inputs, selects = false }) {
           pd_price:""
         }}
         onSubmit={async (valores) => {
-          console.log(ruta)
+          
           if (ruta === "productos") {
             await fetch(`${process.env.REACT_APP_SERVER_URL}/products`, {
               method: "POST",
