@@ -47,7 +47,7 @@ function DashboardAux() {
   };
 
   const week = getWeek();
-  
+
   const labels = week.map((day, index) => day.day);
   const [valores, setValores] = useState([]); // Inicializa el estado "valores" con un arreglo vacío y la función "setValores" para actualizarlo
 
@@ -64,7 +64,7 @@ function DashboardAux() {
         }
       );
       const data = await response.json(); // Espera a que la respuesta del servidor se convierta en formato JSON
-      
+
       return data[0].sum === null ? 0 : data[0].sum; // Devuelve 0 si el valor "sum" es nulo, en otro caso devuelve "sum"
 
     });
@@ -83,52 +83,52 @@ function DashboardAux() {
   }, [valores]);
 
   return (
-  <>
-      <Typography className="titulos" sx={{marginTop: '8rem'}}>Ventas de los últimos 7 días</Typography>
-    <Box >
-    <Line
-      data={{
-        labels,
-        datasets: [
-          {
-            fill: true,
-            label: 'Ventas',
-            data: week.map((day, index) => valores[index]),
-            borderColor: 'rgb(14, 14, 115)',
-            backgroundColor: '#1976d2',
-            pointBackgroundColor: 'rgb(58, 51, 159)',
-            pointRadius: 8,
-            tension: 0.1
-                
-          },
-        ],
-      }}
-      options={{
-        responsive:true,
-        scales: {
-          y: {
-            grid: {
-              color: 'rgb(82, 81, 81)', // Cambiar el color aquí}
-            },
-            ticks: {
-              color: 'white', // Cambiar el color aquí
-            },
-          },
-          x: {
-            grid: {
-              color: 'rgb(82, 81, 81)', // Cambiar el color aquí
-            },
-            ticks: {
-              color: 'white', // Cambiar el color aquí
-            },
-          },
-        },
-        
-      }
-      }>
+    <>
+      <Typography className="titulos" sx={{ marginTop: '5rem', marginLeft: "5rem" }}>Ventas de los últimos 7 días</Typography>
+      <Box sx={{ height: "30rem", marginLeft: "5rem" }} >
+        <Line
+          data={{
+            labels,
+            datasets: [
+              {
+                fill: true,
+                label: 'Ventas',
+                data: week.map((day, index) => valores[index]),
+                borderColor: 'rgb(14, 14, 115)',
+                backgroundColor: '#1976d2',
+                pointBackgroundColor: 'rgb(58, 51, 159)',
+                pointRadius: 8,
+                tension: 0.1
 
-    </Line>
-    </Box>
+              },
+            ],
+          }}
+          options={{
+            responsive: true,
+            scales: {
+              y: {
+                grid: {
+                  color: 'rgb(82, 81, 81)', // Cambiar el color aquí}
+                },
+                ticks: {
+                  color: 'white', // Cambiar el color aquí
+                },
+              },
+              x: {
+                grid: {
+                  color: 'rgb(82, 81, 81)', // Cambiar el color aquí
+                },
+                ticks: {
+                  color: 'white', // Cambiar el color aquí
+                },
+              },
+            },
+
+          }
+          }>
+
+        </Line>
+      </Box>
     </>
   )
 }

@@ -12,14 +12,14 @@ export default function ImgMediaCard({ titulo, precio, descripción, id }) {
   return (
     <>
       <Card sx={{ minWidth: 275, background: "#C7E2FF" }}>
-        <CardContent>
+        <CardContent sx={{ paddingBottom: "0" }}>
           <Typography color="text.primary" variant="h4" gutterBottom>
             {titulo}
           </Typography>
           <Typography variant="h6" component="div">
             $ {precio}
           </Typography>
-          <Typography sx={{ mb: 2.5 }} color="text.secondary">
+          <Typography sx={{ padding: "0" }} color="text.secondary">
             {descripción}
           </Typography>
         </CardContent>
@@ -27,7 +27,7 @@ export default function ImgMediaCard({ titulo, precio, descripción, id }) {
           direction="row"
           justifyContent="flex-end"
           alignItems="flex-end"
-          spacing={2}
+
         >
           <CardActions>
             <Button

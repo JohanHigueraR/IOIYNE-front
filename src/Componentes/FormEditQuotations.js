@@ -239,7 +239,7 @@ export default function FormQuotations({ loginStateAux }) {
         alignItems="flex-end"
         spacing={2}
       >
-        <Typography className="titulos" sx={{ marginTop: "3rem" }}>
+        <Typography className="titulos" sx={{ marginTop: "6rem" }}>
           Editar cotización
         </Typography>
         <Typography
@@ -401,7 +401,7 @@ export default function FormQuotations({ loginStateAux }) {
       </Stack>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-          Correo enviado correctamente!
+          Correo enviado correctamente, recuerde GUARDAR su cotizacion!
         </Alert>
       </Snackbar>
     </>

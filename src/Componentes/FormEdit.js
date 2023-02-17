@@ -31,7 +31,7 @@ const CssTextField = styled(TextField)({
     color: "red",
   },
 });
-export default function FormEdit({ titulo, inputs, selects = false}) {
+export default function FormEdit({ titulo, inputs, selects = false }) {
   const location = useLocation();
   const params = useParams();
   const [ruta, setRuta] = useState(null);
@@ -70,8 +70,8 @@ export default function FormEdit({ titulo, inputs, selects = false}) {
     }
   };
   useEffect(() => {
-      peticion();
-  },[]);
+    peticion();
+  }, []);
   return (
     <Container component="main" maxWidth="xs" className="contenedorFormulario">
       <Typography className="tituloFormulario">{titulo}</Typography>
@@ -102,7 +102,7 @@ export default function FormEdit({ titulo, inputs, selects = false}) {
                 body: JSON.stringify(valores),
                 headers: { "Content-type": "application/json" },
               });
-              
+
               navigate("/" + ruta)
             }
           }}
@@ -135,9 +135,10 @@ export default function FormEdit({ titulo, inputs, selects = false}) {
                       name={input.value}
                       focused
                       defaultValue={
-                      input.type !== "file" ? values[input.value] : ""
-                       } 
+                        input.type !== "file" ? values[input.value] : ""
+                      }
                       onChange={handleChange}
+                      inputProps={{ maxLength: 31 }}
                     ></CssTextField>
                   ))}
 
@@ -168,7 +169,7 @@ export default function FormEdit({ titulo, inputs, selects = false}) {
           )}
         </Formik>
       ) : (
-        <Typography sx={{color:'white'}}>Esta entrando al else</Typography>
+        <Typography sx={{ color: 'white' }}>Esta entrando al else</Typography>
       )}
     </Container>
   );

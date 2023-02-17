@@ -17,7 +17,7 @@ function Productos() {
     loadProducts();
   }, []);
   return (
-    <Container sx={{ marginTop: '5rem' }}>
+    <Container sx={{ marginTop: '4.5rem' }}>
       <Typography className="titulos">Lista de Productos</Typography>
       <Button variant="contained" color="warning" onClick={() => navigate("/crearproducto")}>Crear Producto</Button>
       <div className="contenedorProductos">

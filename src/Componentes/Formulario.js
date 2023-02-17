@@ -35,7 +35,7 @@ export default function Formulario({ titulo, inputs, selects = false }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [ruta, setRuta] = useState(null);
-  
+
   const peticion = () => {
     if (location.pathname === "/crearproducto") {
       setRuta("productos");
@@ -46,30 +46,30 @@ export default function Formulario({ titulo, inputs, selects = false }) {
     }
   };
   useEffect(() => {
-      peticion();
+    peticion();
   }, []);
   return (
     <Container component="main" maxWidth="xs" className="contenedorFormulario">
       <Typography className="tituloFormulario">{titulo}</Typography>
       <Formik
-        initialValues={{  
-          us_name:"",
-          us_lastname:"",
-          us_email:"",
-          us_password:"",
-          us_admin:"",
-          cl_name:"",
-          cl_lastname:"",
-          cl_email:"",
-          cl_ident:"",
-          cl_address:"",
-          pd_name:"",
-          pd_description:"",
-          pd_image:"",
-          pd_price:""
+        initialValues={{
+          us_name: "",
+          us_lastname: "",
+          us_email: "",
+          us_password: "",
+          us_admin: "",
+          cl_name: "",
+          cl_lastname: "",
+          cl_email: "",
+          cl_ident: "",
+          cl_address: "",
+          pd_name: "",
+          pd_description: "",
+          pd_image: "",
+          pd_price: ""
         }}
         onSubmit={async (valores) => {
-          
+
           if (ruta === "productos") {
             await fetch(`${process.env.REACT_APP_SERVER_URL}/products`, {
               method: "POST",
@@ -77,22 +77,22 @@ export default function Formulario({ titulo, inputs, selects = false }) {
               headers: { "Content-type": "application/json" },
             }
             )
-            navigate("/"+ruta);
+            navigate("/" + ruta);
           } else if (ruta === "clientes") {
             await fetch(`${process.env.REACT_APP_SERVER_URL}/clients`, {
               method: "POST",
               body: JSON.stringify(valores),
               headers: { "Content-type": "application/json" },
             })
-            navigate("/"+ruta)
+            navigate("/" + ruta)
           } else if (ruta === "usuarios") {
-            
+
             await fetch(`${process.env.REACT_APP_SERVER_URL}/users`, {
               method: "POST",
               body: JSON.stringify(valores),
               headers: { "Content-type": "application/json" },
             })
-            navigate("/"+ruta);
+            navigate("/" + ruta);
           }
         }}
       >
@@ -124,6 +124,7 @@ export default function Formulario({ titulo, inputs, selects = false }) {
                     name={input.value}
                     focused
                     onChange={handleChange}
+                    inputProps={{ maxLength: 30 }}
                   ></CssTextField>
                 ))}
 
@@ -145,7 +146,7 @@ export default function Formulario({ titulo, inputs, selects = false }) {
                   fullWidth
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
-                  
+
                 >
                   Guardar
                 </Button>

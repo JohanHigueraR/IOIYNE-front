@@ -6,12 +6,12 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import StarIcon from "@mui/icons-material/Star";
 import { Button, Container, Typography } from "@mui/material";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 export default function InsetList() {
-  
-  
+
+
 
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
@@ -26,7 +26,7 @@ export default function InsetList() {
   }, []);
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" sx={{ marginTop: '4.5rem', marginLeft: '20rem' }}>
       <Typography marginTop={"60px"} className="titulos">
         Lista de usuarios
       </Typography>
@@ -40,23 +40,25 @@ export default function InsetList() {
       <List
         sx={{
           width: "100%",
-          maxWidth: 760,
+          maxWidth: 500,
           bgcolor: "#1976d2",
           color: "white",
           border: "solid 1px black",
           padding: "0",
+          marginTop: "15px",
+          textAlign: 'center'
         }}
         aria-label="contacts"
       >
         {users.map((user, index) => (
-          <ListItem disablePadding key={index} onClick={()=>navigate("/editarusuario/"+user.user_id)} sx={{ borderBottom: "inset 1px black" }}>
+          <ListItem disablePadding key={index} onClick={() => navigate("/editarusuario/" + user.user_id)} sx={{ borderBottom: "inset 3px black" }}>
             <ListItemButton>
               <ListItemIcon>
-                {user.us_admin===true?<StarIcon color="warning" />:<></>}
+                {user.us_admin === true ? <StarIcon color="warning" /> : <></>}
               </ListItemIcon>
               <ListItemText
-                primary={user.us_name +' '+  user.us_lastname}
-                secondary={user.us_admin===true?'Administrador':'Gestor'}
+                primary={user.us_name + ' ' + user.us_lastname}
+                secondary={user.us_admin === true ? 'Administrador' : 'Gestor'}
               />
             </ListItemButton>
           </ListItem>

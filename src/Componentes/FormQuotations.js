@@ -236,7 +236,7 @@ export default function FormQuotations({ loginStateAux }) {
         justifyContent="space-between"
         alignItems="flex-end"
         spacing={2}>
-        <Typography className="titulos" sx={{ marginTop: '3rem' }}>Crear cotización</Typography>
+        <Typography className="titulos" sx={{ marginTop: '4.5rem' }}>Crear cotización</Typography>
         <Typography sx={{ marginTop: '4rem', color: "#C7E2FF", fontSize: '1.5rem' }}>{"Ref " + ident}</Typography>
       </Stack>
       <TableContainer component={Paper} className="table">
@@ -351,12 +351,12 @@ export default function FormQuotations({ loginStateAux }) {
         <ButtonGroup sx={{ marginTop: "10px" }} variant="contained" aria-label="outlined primary button group">
           <Button onClick={() => navigate('/cotizaciones')} color='warning'>Cancelar</Button>
           <Button onClick={() => { handleClick(); sendEmail() }} color='success'>Enviar</Button>
-          <Button onClick={createFinalQuotation} >Crear</Button>
+          <Button onClick={createFinalQuotation} >Guardar</Button>
         </ButtonGroup>
       </Stack>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-          Correo enviado correctamente!
+          Correo enviado correctamente, recuerde GUARDAR su cotizacion!
         </Alert>
       </Snackbar>
     </>

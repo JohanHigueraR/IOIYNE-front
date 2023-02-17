@@ -129,13 +129,13 @@ export default function Cotizaciones() {
   }, []);
 
   return (
-    <Container sx={{ marginTop: "5rem" }}>
+    <Container sx={{ marginTop: "4.5rem" }}>
       <Typography className="titulos">Lista de cotizaciones</Typography>
       <Alert severity="info" sx={{ background: '#080215', color: '#C7E2FF' }}>Para editar pulse click en la cotización</Alert>
       <Button variant="contained" onClick={() => navigate("/crearcotizacion")}>
         Crear Cotización
       </Button>
-      <Box sx={{ height: 400, width: "100%" }}>
+      <Box sx={{ height: 400, width: "100%", marginTop: "15px" }}>
         <DataGrid
           key={quotations}
           rows={quotations}

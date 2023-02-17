@@ -84,13 +84,13 @@ export default function Clientes() {
 
   const getClientId = (event) => {
     var id = event.currentTarget.getAttribute("data-id");
-    navigate("/editarcliente/"+id)
+    navigate("/editarcliente/" + id)
   }
 
   const loadClients = async () => {
     const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/clients`);
     const data = await response.json();
-    
+
     setClients(
       data.map(
         ({
@@ -115,16 +115,16 @@ export default function Clientes() {
   };
   useEffect(() => {
     loadClients();
-  },[]);
+  }, []);
 
   return (
-    <Container sx={{ marginTop: "5rem" }}>
+    <Container sx={{ marginTop: "4.5rem" }}>
       <Typography className="titulos">Lista de clientes</Typography>
-      <Alert severity="info" sx={{background:'#080215', color:'#C7E2FF'}}>Para editar pulse click en el cliente</Alert>
+      <Alert severity="info" sx={{ background: '#080215', color: '#C7E2FF' }}>Para editar pulse click en el cliente</Alert>
       <Button variant="contained" onClick={() => navigate("/crearcliente")}>
         Crear Cliente
       </Button>
-      <Box sx={{ height: 400, width: "100%" }}>
+      <Box sx={{ height: 400, width: "100%", marginTop: "15px" }}>
         <DataGrid
           rows={clients}
           columns={columns}
@@ -136,7 +136,7 @@ export default function Clientes() {
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           componentsProps={{
             row: {
-              
+
               onClick: getClientId,
               style: { cursor: "context-menu" },
             },
