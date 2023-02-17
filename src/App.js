@@ -92,7 +92,7 @@ function App() {
                     titulo="Crear Usuario"
                     /* inputs={["usuario", "contraseña"]} */
                     inputs={[
-                      { value: "us_email", type: "text", label: "usuario" },
+                      { value: "us_email", type: "email", label: "Correo" },
                       {
                         value: "us_password",
                         type: "text",
@@ -111,7 +111,7 @@ function App() {
                   <FormEdit
                     titulo="Editar Usuario"
                     inputs={[
-                      { value: "us_email", type: "text", label: "usuario" },
+                      { value: "us_email", type: "email", label: "Email" },
                       {
                         value: "us_password",
                         type: "password",
@@ -130,7 +130,7 @@ function App() {
                   <FormEditCuenta
                     titulo="Editar Usuario"
                     inputs={[
-                      { value: "us_email", type: "text", label: "usuario" },
+                      { value: "us_email", type: "email", label: "Correo" },
                       {
                         value: "us_password",
                         type: "password",

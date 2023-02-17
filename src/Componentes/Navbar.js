@@ -48,7 +48,9 @@ function ResponsiveAppBar({ loginState, setLoginAux }) {
     <AppBar position="fixed" className='no-print'>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <img className="iconNavbar" src='./logo3.png' onClick={() => navigate('/')} ></img>
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}>
+          <img className="iconNavbar" src='./logo3.png' onClick={() => navigate('/')} ></img> 
+          </Box>
           <Typography
             variant="h6"
             noWrap
@@ -107,6 +109,9 @@ function ResponsiveAppBar({ loginState, setLoginAux }) {
               ))}
             </Menu>
           </Box>
+          <Box sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}>
+          <img className="iconNavbar" src='./logo3.png' onClick={() => navigate('/')} ></img> 
+          </Box>
           <Typography
             variant="h5"
             noWrap
@@ -123,7 +128,7 @@ function ResponsiveAppBar({ loginState, setLoginAux }) {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            IOYNE
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {userLogin.us_admin === true ? adminPages.map((page, index) => (

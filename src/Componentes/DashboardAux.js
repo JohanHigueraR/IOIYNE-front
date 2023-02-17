@@ -25,12 +25,11 @@ ChartJS.register(
 
 
 function DashboardAux() {
-  
 
   const getWeek = () => {
     let datesAndDays = [];
     let d = new Date();
-    d.setDate(d.getDate() - 7);
+    d.setDate(d.getDate() - 6);
     for (let i = 0; i < 7; i++) {
       let currentDate = new Date();
       currentDate.setDate(d.getDate() + i);
@@ -99,6 +98,7 @@ function DashboardAux() {
             backgroundColor: '#1976d2',
             pointBackgroundColor: 'rgb(58, 51, 159)',
             pointRadius: 8,
+            tension: 0.5
                 
           },
         ],

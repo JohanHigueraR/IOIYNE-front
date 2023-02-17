@@ -76,14 +76,14 @@ export default function Login({ getSubmitLogin, loginStateAux }) {
       <Container component="main" maxWidth="xs" height="100vh">
 
         <Card id="cardLogin">
-          <CardContent>
-            <Typography sx={{ fontSize: 16 }} color="white" gutterBottom>
+          <CardContent sx={{width: "100%"}}>
+            <Typography sx={{ fontSize: 20, fontWeight:'bolder' }} color="white"  gutterBottom>
               Nota del desarrollador
             </Typography>
             {/* <Typography sx={{ mb: 1.5 }} color="white">
               Usuario para pruebas:
             </Typography> */}
-            <Typography variant="body2">
+            <Typography>
               Usuario: admin@admin.com
               <br />
               {'Contraseña: admin123'}
