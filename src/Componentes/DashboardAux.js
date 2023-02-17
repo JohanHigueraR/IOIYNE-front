@@ -98,7 +98,7 @@ function DashboardAux() {
             backgroundColor: '#1976d2',
             pointBackgroundColor: 'rgb(58, 51, 159)',
             pointRadius: 8,
-            tension: 0.5
+            tension: 0.1
                 
           },
         ],
