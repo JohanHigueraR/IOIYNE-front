@@ -13,13 +13,13 @@ export default function ImgMediaCard({ titulo, precio, descripción, id }) {
     <>
       <Card sx={{ minWidth: 275, background: "#C7E2FF" }}>
         <CardContent>
-          <Typography color="text.primary" variant="h6" gutterBottom>
+          <Typography color="text.primary" variant="h4" gutterBottom>
             {titulo}
           </Typography>
           <Typography variant="h6" component="div">
-            ${precio}
+            $ {precio}
           </Typography>
-          <Typography sx={{ mb: 4.5 }} color="text.secondary">
+          <Typography sx={{ mb: 2.5 }} color="text.secondary">
             {descripción}
           </Typography>
         </CardContent>

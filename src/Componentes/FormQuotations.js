@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -10,14 +11,38 @@ import { Autocomplete, Button, ButtonGroup, TextField, Typography, } from "@mui/
 import { ModalQuotation } from "./ModalQuotation";
 import { Stack } from "@mui/system";
 import { useNavigate } from "react-router-dom";
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 
 export default function FormQuotations({ loginStateAux }) {
+
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+
 
   const navigate = useNavigate();
 
   // Cargar y setear datos de clientes desde la db
   const [clients, setClients] = useState([]);
-  
+
 
   const loadClients = async () => {
     const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/clients`);
@@ -81,10 +106,9 @@ export default function FormQuotations({ loginStateAux }) {
         ),
         headers: { "Content-type": "application/json" },
       });
-    } else {
-      
     }
   }
+
   const createFinalQuotation = async () => {
 
     if (client.label !== "Seleccione un cliente") {
@@ -99,9 +123,10 @@ export default function FormQuotations({ loginStateAux }) {
         ),
         headers: { "Content-type": "application/json" },
       });
-    } else {
-      
     }
+
+    navigate('/cotizaciones')
+
   }
 
   useEffect(() => {
@@ -125,6 +150,7 @@ export default function FormQuotations({ loginStateAux }) {
     setRequiredProducts([
       ...requiredProducts,
       {
+
         nombre: nombre,
         descripcion: descripcion,
         cantidad: cantidad,
@@ -274,16 +300,16 @@ export default function FormQuotations({ loginStateAux }) {
                 <TableCell>{requiredProduct.nombre}</TableCell>
                 <TableCell>{requiredProduct.descripcion}</TableCell>
                 <TableCell align="center">{requiredProduct.cantidad}</TableCell>
-                <TableCell align="center">{requiredProduct.precio}</TableCell>
+                <TableCell align="center">$ {requiredProduct.precio}</TableCell>
                 <TableCell align="center">
-                  {requiredProduct.precio * requiredProduct.cantidad}
+                  $ {requiredProduct.precio * requiredProduct.cantidad}
                 </TableCell>
               </TableRow>
             ))}
             <TableRow>
               <TableCell rowSpan={3} />
               <TableCell colSpan={3}>Subtotal</TableCell>
-              <TableCell align="center">{subTotal}</TableCell>
+              <TableCell align="center">$ {subTotal}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell colSpan={1}>Descuento</TableCell>
@@ -311,7 +337,7 @@ export default function FormQuotations({ loginStateAux }) {
             </TableRow>
             <TableRow>
               <TableCell colSpan={3}>Total</TableCell>
-              <TableCell align="center">{total}</TableCell>
+              <TableCell align="center">$ {total}</TableCell>
             </TableRow>
           </TableBody>
         </Table>
@@ -324,10 +350,15 @@ export default function FormQuotations({ loginStateAux }) {
 
         <ButtonGroup sx={{ marginTop: "10px" }} variant="contained" aria-label="outlined primary button group">
           <Button onClick={() => navigate('/cotizaciones')} color='warning'>Cancelar</Button>
-          <Button onClick={sendEmail} color='success'>Enviar</Button>
-          <Button onClick={createFinalQuotation}>Crear</Button>
+          <Button onClick={() => { handleClick(); sendEmail() }} color='success'>Enviar</Button>
+          <Button onClick={createFinalQuotation} >Crear</Button>
         </ButtonGroup>
       </Stack>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          Correo enviado correctamente!
+        </Alert>
+      </Snackbar>
     </>
   );
 }

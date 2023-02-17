@@ -6,7 +6,7 @@ import Modal from "@mui/material/Modal";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { Autocomplete, TextField } from "@mui/material";
 import { Stack } from "@mui/system";
-import {useParams} from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 // Estilos del modal
 const style = {
@@ -71,22 +71,36 @@ export function ModalQuotation({ handleSubmitProducts, ident }) {
   const handleClose = () => setOpen(false);
 
 
-
-
   // Crear productos con su respectiva cantidad en la db
   const addReqProduct = async () => {
 
-    await fetch(`${process.env.REACT_APP_SERVER_URL}/requestedproduct`, {
-      method: "POST",
-      body: JSON.stringify(
-        {
-          "product_id": product.product_id,
-          "qu_ident": params.id,
-          "quantity": parseInt(quantity)
-        }
-      ),
-      headers: { "Content-type": "application/json" },
-    });
+    if (params.id) {
+      await fetch(`${process.env.REACT_APP_SERVER_URL}/requestedproduct`, {
+        method: "POST",
+        body: JSON.stringify(
+          {
+            "product_id": product.product_id,
+            "qu_ident": params.id,
+            "quantity": parseInt(quantity)
+          }
+        ),
+        headers: { "Content-type": "application/json" },
+      });
+
+    } else {
+      await fetch(`${process.env.REACT_APP_SERVER_URL}/requestedproduct`, {
+        method: "POST",
+        body: JSON.stringify(
+          {
+            "product_id": product.product_id,
+            "qu_ident": ident,
+            "quantity": parseInt(quantity)
+          }
+        ),
+        headers: { "Content-type": "application/json" },
+      });
+
+    }
   }
 
 

@@ -42,7 +42,7 @@ function CustomPagination() {
   );
 }
 
-const columns = [ 
+const columns = [
   { field: "id", headerName: "Cotización", width: 120 },
   {
     field: "to_char",
@@ -71,7 +71,7 @@ const columns = [
     description: "This column has a value getter and is not sortable.",
     width: 200,
     valueGetter: (params) =>
-    `${params.row.us_name || ''} ${params.row.us_lastname || ''}`,
+      `${params.row.us_name || ''} ${params.row.us_lastname || ''}`,
   },
   {
     field: "qu_value",
@@ -79,7 +79,7 @@ const columns = [
     description: "This column has a value getter and is not sortable.",
     width: 180,
   },
-  
+
 ];
 
 export default function Cotizaciones() {
@@ -88,7 +88,7 @@ export default function Cotizaciones() {
 
   const getBillId = (event) => {
     var id = event.currentTarget.getAttribute("data-id")
-    navigate("/editarcotizacion/"+id)
+    navigate("/editarcotizacion/" + id)
   }
 
   const loadQuotations = async () => {
@@ -97,7 +97,7 @@ export default function Cotizaciones() {
     setQuotations(
       data.map(
         ({
-          
+
           cl_name,
           cl_lastname,
           cl_email,
@@ -106,8 +106,8 @@ export default function Cotizaciones() {
           to_char,
           qu_ident,
           qu_value
-          
-          
+
+
         }) => {
           return {
             id: qu_ident,
@@ -118,7 +118,7 @@ export default function Cotizaciones() {
             us_lastname,
             to_char,
             qu_ident,
-            qu_value
+            qu_value: '$ ' + qu_value
           };
         }
       )
@@ -131,7 +131,7 @@ export default function Cotizaciones() {
   return (
     <Container sx={{ marginTop: "5rem" }}>
       <Typography className="titulos">Lista de cotizaciones</Typography>
-      <Alert severity="info" sx={{background:'#080215', color:'#C7E2FF'}}>Para editar pulse click derecho en la cotización</Alert>
+      <Alert severity="info" sx={{ background: '#080215', color: '#C7E2FF' }}>Para editar pulse click en la cotización</Alert>
       <Button variant="contained" onClick={() => navigate("/crearcotizacion")}>
         Crear Cotización
       </Button>
@@ -148,7 +148,7 @@ export default function Cotizaciones() {
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
           componentsProps={{
             row: {
-              
+
               style: { cursor: "context-menu" },
               onClick: getBillId
             },

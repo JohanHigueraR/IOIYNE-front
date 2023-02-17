@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -18,10 +19,32 @@ import { ModalQuotation } from "./ModalQuotation";
 import { Stack } from "@mui/system";
 import { useNavigate, useParams } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 export default function FormQuotations({ loginStateAux }) {
+
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
   const params = useParams();
-  const navigate= useNavigate();
+  const navigate = useNavigate();
 
   // Cargar y setear datos de clientes desde la db
   const [clients, setClients] = useState([]);
@@ -75,7 +98,8 @@ export default function FormQuotations({ loginStateAux }) {
       }
     );
     const data = await response.json();
-    
+    console.log(data)
+
     setClient({
       label: data[0].cl_name + " " + data[0].cl_lastname,
       cl_email: data[0].cl_email,
@@ -94,6 +118,7 @@ export default function FormQuotations({ loginStateAux }) {
     );
   };
 
+  const userLogged = JSON.parse(loginStateAux)
   const editFinalQuotation = async () => {
     if (client.label !== "Seleccione un cliente") {
       await fetch(`${process.env.REACT_APP_SERVER_URL}/quotations`, {
@@ -163,7 +188,7 @@ export default function FormQuotations({ loginStateAux }) {
       setTotal((subTotal - descuento));
     }
   };
-  const handleRemoveProduct = async(product) => {
+  const handleRemoveProduct = async (product) => {
     setRequiredProducts(requiredProducts.filter((item) => item !== product));
     await fetch(`${process.env.REACT_APP_SERVER_URL}/requestedproduct`, {
       method: "DELETE",
@@ -186,6 +211,25 @@ export default function FormQuotations({ loginStateAux }) {
     loadClients();
     getQuotationForEdit();
   }, []);
+
+  const sendEmail = async () => {
+
+    await fetch(`${process.env.REACT_APP_SERVER_URL}/email`, {
+      method: "POST",
+      body: JSON.stringify(
+        {
+          "qu_ident": params.id,
+          "us_name": userLogged.us_name,
+          "cl_name": client.label,
+          "cl_email": client.cl_email,
+          "cl_address": client.cl_address,
+          "qu_value": total
+
+        }
+      ),
+      headers: { "Content-type": "application/json" },
+    });
+  }
 
   return (
     <>
@@ -251,7 +295,7 @@ export default function FormQuotations({ loginStateAux }) {
                     ident={ident}
                     handleSubmitProducts={handleSubmitProducts}
                   ></ModalQuotation>
-                  
+
                 ) : (
                   <></>
                 )}
@@ -279,7 +323,7 @@ export default function FormQuotations({ loginStateAux }) {
                 </TableCell>
                 <TableCell align="center">
                   <IconButton
-                    
+
                     aria-label="delete"
                     size="small"
                     onClick={() => handleRemoveProduct(requiredProduct)}
@@ -344,16 +388,22 @@ export default function FormQuotations({ loginStateAux }) {
         justifyContent="flex-end"
         alignItems="flex-start"
         spacing={2}
-        sx={{marginTop: '0.8rem'}}
+        sx={{ marginTop: '0.8rem' }}
       >
         <ButtonGroup
           variant="contained"
           aria-label="outlined primary button group"
         >
-          <Button color="warning" onClick={()=>navigate("/cotizacion")}>Cancelar</Button>
+          <Button color="warning" onClick={() => navigate("/cotizaciones")}>Cancelar</Button>
+          <Button onClick={() => { handleClick(); sendEmail() }} color='success'>Enviar</Button>
           <Button onClick={editFinalQuotation}>Guardar</Button>
         </ButtonGroup>
       </Stack>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          Correo enviado correctamente!
+        </Alert>
+      </Snackbar>
     </>
   );
 }
