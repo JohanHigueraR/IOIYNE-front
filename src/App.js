@@ -37,7 +37,8 @@ function App() {
   const validateLogin = () => {
     if (loginState === "cuenta bloqueada por dos horas") {
       localStorage.setItem("loginState", loginState);
-    } else if (loginState === "") {
+    } else if (loginState === "usuario no registrado") {
+      localStorage.setItem("loginState", loginState);
     } else if (loginState === "contraseña incorrecta") {
       localStorage.setItem("loginState", loginState);
     } else {

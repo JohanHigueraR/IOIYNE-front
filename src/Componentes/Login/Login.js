@@ -54,6 +54,7 @@ const theme = createTheme();
 
 // Creacion de componente login: La funcion validateLogin viene como prop desde app.js
 export default function Login({ getSubmitLogin, loginStateAux }) {
+  
 
   const [typedLogin, setLogin] = useState({
     us_email: "",
@@ -68,6 +69,7 @@ export default function Login({ getSubmitLogin, loginStateAux }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     getSubmitLogin(typedLogin);
+    console.log(loginStateAux)
   };
 
 
@@ -93,7 +95,7 @@ export default function Login({ getSubmitLogin, loginStateAux }) {
 
 
 
-        {loginStateAux === "contraseña incorrecta" || loginStateAux === "cuenta bloqueada por dos horas" ? (
+        {loginStateAux === "contraseña incorrecta" || loginStateAux === "cuenta bloqueada por dos horas" || loginStateAux === "usuario no registrado"? (
           <Alert
             severity="error"
             sx={{
