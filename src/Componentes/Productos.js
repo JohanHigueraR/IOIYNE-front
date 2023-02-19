@@ -1,4 +1,4 @@
-import { Button, Typography } from "@mui/material";
+import { Button, LinearProgress, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -6,12 +6,16 @@ import Card from "./Card";
 
 
 function Productos() {
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const [products, setProducts] = useState([]);
   const loadProducts = async () => {
+    setLoading(true)
     const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/products`);
     const data = await response.json();
     setProducts(data);
+    setLoading(false)
+    
   };
   useEffect(() => {
     loadProducts();
@@ -20,7 +24,7 @@ function Productos() {
     <Container sx={{ marginTop: '4.5rem' }}>
       <Typography className="titulos">Lista de Productos</Typography>
       <Button variant="contained" color="warning" onClick={() => navigate("/crearproducto")}>Crear Producto</Button>
-      <div className="contenedorProductos">
+      {loading === false?<div className="contenedorProductos">
         {products.map((product, index) => (
           <Card
             titulo={product.pd_name}
@@ -31,7 +35,8 @@ function Productos() {
             key={index}
           ></Card>
         ))}
-      </div>
+      </div>:<LinearProgress></LinearProgress>}
+      
     </Container>
   );
 }

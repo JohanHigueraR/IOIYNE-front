@@ -2,12 +2,12 @@ import { useState } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
+
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
-import { Alert, Card, CardContent } from "@mui/material";
+import { Alert, Card, CardContent, CircularProgress } from "@mui/material";
 
 // Estilos para el css text field
 const CssTextField = styled(TextField)({
@@ -53,8 +53,9 @@ const CssTextField = styled(TextField)({
 const theme = createTheme();
 
 // Creacion de componente login: La funcion validateLogin viene como prop desde app.js
-export default function Login({ getSubmitLogin, loginStateAux }) {
+export default function Login({ getSubmitLogin, loginStateAux, progress}) {
   
+  console.log(progress)
 
   const [typedLogin, setLogin] = useState({
     us_email: "",
@@ -68,18 +69,19 @@ export default function Login({ getSubmitLogin, loginStateAux }) {
   // del login por props, pasandole los datos tipeados por el usuario
   const handleSubmit = (event) => {
     event.preventDefault();
-    getSubmitLogin(typedLogin);
-    console.log(loginStateAux)
+    getSubmitLogin(typedLogin); 
   };
-
 
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs" height="100vh">
-
         <Card id="cardLogin">
-          <CardContent sx={{width: "100%"}}>
-            <Typography sx={{ fontSize: 20, fontWeight:'bolder' }} color="white"  gutterBottom>
+          <CardContent sx={{ width: "100%" }}>
+            <Typography
+              sx={{ fontSize: 20, fontWeight: "bolder" }}
+              color="white"
+              gutterBottom
+            >
               Nota del desarrollador
             </Typography>
             {/* <Typography sx={{ mb: 1.5 }} color="white">
@@ -88,14 +90,14 @@ export default function Login({ getSubmitLogin, loginStateAux }) {
             <Typography>
               Usuario: admin@admin.com
               <br />
-              {'Contraseña: admin123'}
+              {"Contraseña: admin123"}
             </Typography>
           </CardContent>
         </Card>
 
-
-
-        {loginStateAux === "contraseña incorrecta" || loginStateAux === "cuenta bloqueada por dos horas" || loginStateAux === "usuario no registrado"? (
+        {loginStateAux === "contraseña incorrecta" ||
+        loginStateAux === "cuenta bloqueada por dos horas" ||
+        loginStateAux === "usuario no registrado" ? (
           <Alert
             severity="error"
             sx={{
@@ -154,7 +156,9 @@ export default function Login({ getSubmitLogin, loginStateAux }) {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Iniciar Sesión
+              {progress=== true?
+              <CircularProgress sx={{ color: "white" }}></CircularProgress>: "Iniciar Sesión"
+            }
             </Button>
           </Box>
         </Box>

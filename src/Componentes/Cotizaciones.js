@@ -83,6 +83,7 @@ const columns = [
 ];
 
 export default function Cotizaciones() {
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate();
   const [quotations, setQuotations] = useState([]);
 
@@ -92,8 +93,10 @@ export default function Cotizaciones() {
   }
 
   const loadQuotations = async () => {
+    setLoading(true)
     const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/quotations`);
     const data = await response.json();
+    setLoading(false)
     setQuotations(
       data.map(
         ({
@@ -146,6 +149,7 @@ export default function Cotizaciones() {
           className="DataTable"
           components={{ Toolbar: CustomToolbar, Pagination: CustomPagination }}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+          loading={loading}
           componentsProps={{
             row: {
 

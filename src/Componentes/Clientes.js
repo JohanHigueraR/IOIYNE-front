@@ -79,6 +79,7 @@ const columns = [
 ];
 
 export default function Clientes() {
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate();
   const [clients, setClients] = useState([]);
 
@@ -88,8 +89,10 @@ export default function Clientes() {
   }
 
   const loadClients = async () => {
+    setLoading(true)
     const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/clients`);
     const data = await response.json();
+    setLoading(false)
 
     setClients(
       data.map(
@@ -134,6 +137,7 @@ export default function Clientes() {
           className="DataTable"
           components={{ Toolbar: CustomToolbar, Pagination: CustomPagination }}
           localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+          loading={loading}
           componentsProps={{
             row: {
 

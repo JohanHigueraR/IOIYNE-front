@@ -85,7 +85,7 @@ function DashboardAux() {
   return (
     <>
       <Typography className="titulos" sx={{ marginTop: '5rem', marginLeft: "5rem" }}>Ventas de los últimos 7 días</Typography>
-      <Box sx={{ height: "30rem", marginLeft: "5rem" }} >
+      <Box sx={{ height: "30rem", marginLeft: "5rem" }} className="contenedorDashboard" >
         <Line
           data={{
             labels,

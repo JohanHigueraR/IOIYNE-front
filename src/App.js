@@ -20,10 +20,12 @@ import DashboardAux from './Componentes/DashboardAux'
 //password: administrador123
 
 function App() {
+  const [progress, setProgress] = useState(false);
   const [loginState, setLoggedUser] = useState("");
   // En loggedUser vamos a almacenar los datos del usuario loggeado
 
   const getSubmitLogin = async (logeado) => {
+    setProgress(true)
     const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/login`, {
       // Esta ruta nos devuelve el objeto del usuario loggeado, si no existe, devuelve "User not found"
       method: "PUT",
@@ -32,6 +34,7 @@ function App() {
     });
     const data = await response.json();
     setLoggedUser(data); // seteamos el usuario loggeado
+    setProgress(false)
   };
 
   const validateLogin = () => {
@@ -39,7 +42,10 @@ function App() {
       localStorage.setItem("loginState", loginState);
     } else if (loginState === "usuario no registrado") {
       localStorage.setItem("loginState", loginState);
-    } else if (loginState === "contraseña incorrecta") {
+    } 
+    else if (loginState === "") {
+      
+    }else if (loginState === "contraseña incorrecta") {
       localStorage.setItem("loginState", loginState);
     } else {
       localStorage.setItem("loginState", JSON.stringify(loginState));
@@ -223,7 +229,7 @@ function App() {
           </Container>
         </BrowserRouter>
       ) : (
-        <Login getSubmitLogin={getSubmitLogin} loginStateAux={loginStateAux}></Login>
+        <Login getSubmitLogin={getSubmitLogin} loginStateAux={loginStateAux} progress={progress}></Login>
       )}
     </>
   );

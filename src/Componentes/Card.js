@@ -1,45 +1,31 @@
 import * as React from "react";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
-import { Stack } from "@mui/material";
+import { Divider, Paper, Stack } from "@mui/material";
 
 export default function ImgMediaCard({ titulo, precio, descripción, id }) {
   const navigate = useNavigate();
   return (
-    <>
-      <Card sx={{ minWidth: 275, background: "#C7E2FF" }}>
-        <CardContent sx={{ paddingBottom: "0" }}>
-          <Typography color="text.primary" variant="h4" gutterBottom>
-            {titulo}
-          </Typography>
-          <Typography variant="h6" component="div">
-            $ {precio}
-          </Typography>
-          <Typography sx={{ padding: "0" }} color="text.secondary">
-            {descripción}
-          </Typography>
-        </CardContent>
+      <Paper variant="outlined" className="cardProduct">
         <Stack
-          direction="row"
-          justifyContent="flex-end"
-          alignItems="flex-end"
-
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          divider={<Divider orientation="vertical" flexItem />}
         >
-          <CardActions>
-            <Button
-              size="small"
-              variant="contained"
-              onClick={() => navigate("/editarproducto/" + id)}
-            >
-              Editar
-            </Button>
-          </CardActions>
+          <Typography sx={{color: "#C7E2FF", textTransform: "capitalize", fontSize: '20px', fontWeight: 'bolder'}}>{titulo}</Typography>
+          <Typography sx={{color: "#C7E2FF", textTransform: "capitalize", fontSize: '18px', fontWeight: '800'}}>$ {precio}</Typography>
+          <Typography sx={{color: "#C7E2FF", marginTop: '10px'}} variant="caption">{descripción}</Typography>
+          <Button
+            sx={{ position: "relative", top: 95 }}
+            onClick={() => navigate("/editarproducto/" + id)}
+            variant="outlined"
+            size="small"
+          >
+            editar
+          </Button>
         </Stack>
-      </Card>
-    </>
+      </Paper>  
   );
 }
