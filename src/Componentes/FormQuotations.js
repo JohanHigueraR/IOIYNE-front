@@ -15,15 +15,17 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
 
+
+
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
 
 export default function FormQuotations({ loginStateAux }) {
+ 
 
   const [open, setOpen] = useState(false);
-
   const handleClick = () => {
     setOpen(true);
   };
@@ -209,25 +211,6 @@ export default function FormQuotations({ loginStateAux }) {
     loadIdent();
   }, []);
 
-  const sendEmail = async () => {
-
-    await fetch(`${process.env.REACT_APP_SERVER_URL}/email`, {
-      method: "POST",
-      body: JSON.stringify(
-        {
-          "qu_ident": parseInt(ident),
-          "us_name": userLogged.us_name,
-          "cl_name": client.label,
-          "cl_email": client.cl_email,
-          "cl_address": client.cl_address,
-          "qu_value": total
-
-        }
-      ),
-      headers: { "Content-type": "application/json" },
-    });
-  }
-
 
   return (
     <>
@@ -239,7 +222,7 @@ export default function FormQuotations({ loginStateAux }) {
         <Typography className="titulos" sx={{ marginTop: '4.5rem' }}>Crear cotización</Typography>
         <Typography sx={{ marginTop: '4rem', color: "#C7E2FF", fontSize: '1.5rem' }}>{"Ref " + ident}</Typography>
       </Stack>
-      <TableContainer component={Paper} className="table">
+      <TableContainer component={Paper} className="table" id="cotizacion">
         <Table sx={{ minWidth: 700 }} aria-label="spanning table">
           <TableHead>
             <TableRow>
@@ -350,13 +333,12 @@ export default function FormQuotations({ loginStateAux }) {
 
         <ButtonGroup sx={{ marginTop: "10px" }} variant="contained" aria-label="outlined primary button group">
           <Button onClick={() => navigate('/cotizaciones')} color='warning'>Cancelar</Button>
-          <Button onClick={() => { handleClick(); sendEmail() }} color='success'>Enviar</Button>
           <Button onClick={createFinalQuotation} >Guardar</Button>
         </ButtonGroup>
       </Stack>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-          Correo enviado correctamente, recuerde GUARDAR su cotizacion!
+          Correo enviado correctamente!
         </Alert>
       </Snackbar>
     </>

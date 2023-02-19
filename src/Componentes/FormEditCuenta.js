@@ -8,6 +8,7 @@ import Container from "@mui/material/Container";
 import { styled } from "@mui/material/styles";
 import { Formik } from "formik";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
+import { CircularProgress, Stack } from "@mui/material";
 
 const CssTextField = styled(TextField)({
   "& label.Mui-focused": {
@@ -132,7 +133,15 @@ if (location.pathname === "/editarusuariologeado/" + params.id) {
           )}
         </Formik>
       ) : (
-        <Typography sx={{color:'white'}}>Esta entrando al else</Typography>
+        <Stack
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        spacing={2}
+        
+        >
+          <CircularProgress sx={{color: 'white'}}></CircularProgress>
+        </Stack>
       )}
     </Container>
   );

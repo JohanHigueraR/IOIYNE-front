@@ -20,7 +20,7 @@ export default function ImgMediaCard({ titulo, precio, descripción, id }) {
           <Button
             sx={{ position: "relative", top: 95 }}
             onClick={() => navigate("/editarproducto/" + id)}
-            variant="outlined"
+            variant="contained"
             size="small"
           >
             editar

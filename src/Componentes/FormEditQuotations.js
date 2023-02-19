@@ -214,17 +214,13 @@ export default function FormQuotations({ loginStateAux }) {
 
   const sendEmail = async () => {
 
-    await fetch(`${process.env.REACT_APP_SERVER_URL}/email`, {
+    await fetch(`${process.env.REACT_APP_SERVER_URL}/emailpdf`, {
       method: "POST",
       body: JSON.stringify(
         {
-          "qu_ident": params.id,
-          "us_name": userLogged.us_name,
-          "cl_name": client.label,
-          "cl_email": client.cl_email,
-          "cl_address": client.cl_address,
-          "qu_value": total
-
+          "qu_ident": params.id,    
+          "tipoDescuento": tipoDescuento,
+          "descuento": descuento
         }
       ),
       headers: { "Content-type": "application/json" },

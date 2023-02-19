@@ -49,7 +49,7 @@ function ResponsiveAppBar({ loginState, setLoginAux }) {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}>
-            <img className="iconNavbar" src='./logo3.png' onClick={() => navigate('/')} ></img>
+            <img className="iconNavbar" src='./logo3.png' onClick={() => navigate('/')} alt="inconNavbar"></img>
           </Box>
           <Typography
             variant="h6"
@@ -110,7 +110,7 @@ function ResponsiveAppBar({ loginState, setLoginAux }) {
             </Menu>
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}>
-            <img className="iconNavbar" src='./logo3.png' onClick={() => navigate('/')} ></img>
+            <img className="iconNavbar" src='./logo3.png' onClick={() => navigate('/')} alt="iconNavabr"></img>
           </Box>
           <Typography
             variant="h5"
@@ -144,7 +144,7 @@ function ResponsiveAppBar({ loginState, setLoginAux }) {
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ mr: 5 }}>
+              <IconButton onClick={handleOpenUserMenu} sx={{ mr: 0 }}>
                 <Avatar alt="User" src="/public/user.png" />
               </IconButton>
             </Tooltip>
