@@ -61,6 +61,33 @@ if (location.pathname === "/editarusuariologeado/" + params.id) {
         <Formik
           initialValues={initialValues}
           enableReinitialize={true}
+          validateOnChange={false}
+          validate={(valores) => {
+            const errors = {};
+            console.log()
+            inputs.forEach((input) => {
+              if (!valores[input.value]) {
+                errors[input.value] = `${input.label} es requerido`;
+              } else if (
+                input.type === "email" &&
+                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
+                  valores[input.value]
+                )
+              ) {
+                errors[input.value] = `${input.label} es inválido`;
+              } else if (input.type === "number" && valores[input.value] < 0) {
+                errors[input.value] = `${input.label} debe ser mayor que 0`;
+              }else if (
+                input.type === "text" &&
+                !/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ\s]+$/i.test(
+                  valores[input.value]
+                )
+              ) {
+                errors[input.value] = `El campo ${input.label} no puede contener números ni caracteres especiales`;
+            }});
+            return errors;
+  
+          }}
           onSubmit={async (valores) => {
           if (ruta === "usuarios") {
               await fetch(`${process.env.REACT_APP_SERVER_URL}/users/${params.id}`, {
@@ -72,7 +99,7 @@ if (location.pathname === "/editarusuariologeado/" + params.id) {
             }
           }}
         >
-          {({ handleSubmit, values, handleChange }) => (
+          {({ handleSubmit, values, handleChange, errors, handleBlur, touched }) => (
             <>
               <CssBaseline />
               <Box
@@ -103,6 +130,8 @@ if (location.pathname === "/editarusuariologeado/" + params.id) {
                       input.type !== "file" ? values[input.value] : ""
                        } 
                       onChange={handleChange}
+                      helperText={ touched[input.value]?errors[input.value]: ""}
+                      onBlur={handleBlur}
                     ></CssTextField>
                   ))}
 

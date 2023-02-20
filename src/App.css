@@ -201,3 +201,6 @@ input[type=number]::-webkit-outer-spin-button {
     padding: 50px;
   }
  }
+ .MuiOutlinedInput-root.Mui-error{
+  color: red !important;
+}
