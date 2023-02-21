@@ -33,7 +33,9 @@ const CssTextField = styled(TextField)({
     color: "red",
   },
 });
+
 export default function FormEdit({ titulo, inputs, selects = false }) {
+
   const location = useLocation();
   const params = useParams();
   const [ruta, setRuta] = useState(null);
@@ -74,22 +76,55 @@ export default function FormEdit({ titulo, inputs, selects = false }) {
       );
     }
   };
+
   useEffect(() => {
     peticion();
   }, []);
+
   return (
-    
-        <Container
-          component="main"
-          maxWidth="xs"
-          className="contenedorFormulario"
-        >
+
+    <Container
+      component="main"
+      maxWidth="xs"
+      className="contenedorFormulario"
+    >
       {initialValues !== "" ? (
         <>
           <Typography className="tituloFormulario">{titulo}</Typography>
+
           <Formik
             initialValues={initialValues}
             enableReinitialize={true}
+            validateOnChange={false}
+
+            validate={(valores) => {
+              const errors = {};
+
+              inputs.forEach((input) => {
+
+                if (!valores[input.value]) {
+                  errors[input.value] = `El campo ${input.label} es requerido`;
+
+                } else if (input.type === "password" && valores[input.value].length < 8) {
+                  errors[input.value] = `El campo ${input.label} debe contener al menos 8 caracteres`;
+
+                } else if (input.type === "email" && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
+                  valores[input.value])
+                ) {
+                  errors[input.value] = `El campo ${input.label} no es válido`;
+
+                } else if (input.type === "number" && valores[input.value] < 0) {
+                  errors[input.value] = `El campo ${input.label} debe ser mayor que 0`;
+
+                } else if (input.type === "text" && !/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ\s]+$/i.test(
+                  valores[input.value])
+                ) {
+                  errors[input.value] = `El campo ${input.label} no puede contener números ni caracteres especiales`;
+                }
+              });
+              return errors;
+            }}
+
             onSubmit={async (valores) => {
               if (ruta === "productos") {
                 await fetch(
@@ -125,7 +160,7 @@ export default function FormEdit({ titulo, inputs, selects = false }) {
               }
             }}
           >
-            {({ handleSubmit, values, handleChange }) => (
+            {({ handleSubmit, values, errors, touched, handleChange, handleBlur }) => (
               <>
                 <CssBaseline />
                 <Box
@@ -156,7 +191,9 @@ export default function FormEdit({ titulo, inputs, selects = false }) {
                           input.type !== "file" ? values[input.value] : ""
                         }
                         onChange={handleChange}
-                        inputProps={{ maxLength: 31 }}
+                        inputProps={{ maxLength: 30 }}
+                        helperText={touched[input.value] ? errors[input.value] : ""}
+                        onBlur={handleBlur}
                       ></CssTextField>
                     ))}
 
@@ -191,19 +228,19 @@ export default function FormEdit({ titulo, inputs, selects = false }) {
               </>
             )}
           </Formik>
-          </>
+        </>
       ) : (
         <Stack
-        direction="column"
-        justifyContent="center"
-        alignItems="center"
-        spacing={2}
-        
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          spacing={2}
+
         >
-          <CircularProgress sx={{color: 'white'}}></CircularProgress>
+          <CircularProgress sx={{ color: 'white' }}></CircularProgress>
         </Stack>
-        )}
-        </Container>
-    
+      )}
+    </Container>
+
   );
 }

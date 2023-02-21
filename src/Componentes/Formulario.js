@@ -34,11 +34,12 @@ const CssTextField = styled(TextField)({
     color: "red",
   },
 });
+
 export default function Formulario({ titulo, inputs, selects = false }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [ruta, setRuta] = useState(null);
-  
+
 
   const peticion = () => {
     if (location.pathname === "/crearproducto") {
@@ -49,11 +50,13 @@ export default function Formulario({ titulo, inputs, selects = false }) {
       setRuta("clientes");
     }
   };
-  
+
   useEffect(() => {
     peticion();
   }, []);
+
   return (
+
     <Container component="main" maxWidth="xs" className="contenedorFormulario">
       <Typography className="tituloFormulario">{titulo}</Typography>
       <Formik
@@ -74,33 +77,34 @@ export default function Formulario({ titulo, inputs, selects = false }) {
           pd_price: ""
         }}
         validateOnChange={false}
-          validate={(valores) => {
-            const errors = {};
-            console.log()
-            inputs.forEach((input) => {
-              if (!valores[input.value]) {
-                errors[input.value] = `${input.label} es requerido`;
-              } else if (
-                input.type === "email" &&
-                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
-                  valores[input.value]
-                )
-              ) {
-                errors[input.value] = `${input.label} es inválido`;
-              } else if (input.type === "number" && valores[input.value] < 0) {
-                errors[input.value] = `${input.label} debe ser mayor que 0`;
-              }else if (
-                input.type === "text" &&
-                !/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ\s]+$/i.test(
-                  valores[input.value]
-                )
-              ) {
-                errors[input.value] = `El campo ${input.label} no puede contener números ni caracteres especiales`;
-            }});
-            return errors;
-  
-          }}
-         
+        validate={(valores) => {
+          const errors = {};
+
+          inputs.forEach((input) => {
+
+            if (!valores[input.value]) {
+              errors[input.value] = `El campo ${input.label} es requerido`;
+
+            } else if (input.type === "password" && valores[input.value].length < 8) {
+              errors[input.value] = `El campo ${input.label} debe contener al menos 8 caracteres`;
+
+            } else if (input.type === "email" && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
+              valores[input.value])
+            ) {
+              errors[input.value] = `El campo ${input.label} no es válido`;
+
+            } else if (input.type === "number" && valores[input.value] < 0) {
+              errors[input.value] = `El campo ${input.label} debe ser mayor que 0`;
+
+            } else if (input.type === "text" && !/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ\s]+$/i.test(
+              valores[input.value])
+            ) {
+              errors[input.value] = `El campo ${input.label} no puede contener números ni caracteres especiales`;
+            }
+          });
+          return errors;
+        }}
+
         onSubmit={async (valores) => {
 
           if (ruta === "productos") {
@@ -129,7 +133,7 @@ export default function Formulario({ titulo, inputs, selects = false }) {
           }
         }}
       >
-        {({ handleSubmit, values,errors, touched, handleChange, handleBlur, }) => (
+        {({ handleSubmit, values, errors, touched, handleChange, handleBlur, }) => (
           <>
             <CssBaseline />
             <Box
@@ -156,10 +160,10 @@ export default function Formulario({ titulo, inputs, selects = false }) {
                     name={input.value}
                     focused
                     onChange={handleChange}
-                    inputProps={{ maxLength: 30 }} 
-                    helperText={ touched[input.value]?errors[input.value]: ""}
+                    inputProps={{ maxLength: 30 }}
+                    helperText={touched[input.value] ? errors[input.value] : ""}
                     onBlur={handleBlur}
-                     
+
                   ></CssTextField>
                 ))}
 
@@ -191,5 +195,6 @@ export default function Formulario({ titulo, inputs, selects = false }) {
         )}
       </Formik>
     </Container>
+
   );
 }
