@@ -116,10 +116,15 @@ export default function FormEdit({ titulo, inputs, selects = false }) {
                 } else if (input.type === "number" && valores[input.value] < 0) {
                   errors[input.value] = `El campo ${input.label} debe ser mayor que 0`;
 
-                } else if (input.type === "text" && !/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ\s]+$/i.test(
+                } else if (input.type === "text" && input.label !== "Dirección" && !/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ\s]+$/i.test(
                   valores[input.value])
                 ) {
                   errors[input.value] = `El campo ${input.label} no puede contener números ni caracteres especiales`;
+
+                } else if (input.label === "Dirección" && !/^[a-zA-Z0-9\s\-\,\.\#]+$/i.test(
+                  valores[input.value])
+                ) {
+                  errors[input.value] = `El campo ${input.label} no es valido`;
                 }
               });
               return errors;

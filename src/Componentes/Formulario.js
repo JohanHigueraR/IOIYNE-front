@@ -76,7 +76,7 @@ export default function Formulario({ titulo, inputs, selects = false }) {
           pd_image: "",
           pd_price: ""
         }}
-        validateOnChange={false}
+        validateOnChange={true}
         validate={(valores) => {
           const errors = {};
 
@@ -96,10 +96,15 @@ export default function Formulario({ titulo, inputs, selects = false }) {
             } else if (input.type === "number" && valores[input.value] < 0) {
               errors[input.value] = `El campo ${input.label} debe ser mayor que 0`;
 
-            } else if (input.type === "text" && !/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ\s]+$/i.test(
+            } else if (input.type === "text" && input.label !== "Dirección" && !/^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ\s]+$/i.test(
               valores[input.value])
             ) {
               errors[input.value] = `El campo ${input.label} no puede contener números ni caracteres especiales`;
+
+            } else if (input.label === "Dirección" && !/^[a-zA-Z0-9\s\-\,\.\#]+$/i.test(
+              valores[input.value])
+            ) {
+              errors[input.value] = `El campo ${input.label} no es valido`;
             }
           });
           return errors;
@@ -148,6 +153,7 @@ export default function Formulario({ titulo, inputs, selects = false }) {
                 component="form"
                 onSubmit={handleSubmit}
                 sx={{ mt: 1 }}
+                autoComplete="off"
               >
                 {inputs.map((input, index) => (
                   <CssTextField
@@ -163,7 +169,7 @@ export default function Formulario({ titulo, inputs, selects = false }) {
                     inputProps={{ maxLength: 30 }}
                     helperText={touched[input.value] ? errors[input.value] : ""}
                     onBlur={handleBlur}
-
+                    autoComplete="off"
                   ></CssTextField>
                 ))}
 
