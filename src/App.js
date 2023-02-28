@@ -15,6 +15,7 @@ import FormQuotations from './Componentes/FormQuotations'
 import FormEditCuenta from "./Componentes/FormEditCuenta";
 import FormEditQuotations from './Componentes/FormEditQuotations'
 import DashboardAux from './Componentes/DashboardAux'
+import Footer from "./Componentes/Footer/Footer";
 
 //correo: ioyne.proyect@gmail.com
 //password: administrador123
@@ -22,6 +23,8 @@ import DashboardAux from './Componentes/DashboardAux'
 function App() {
   const [progress, setProgress] = useState(false);
   const [loginState, setLoggedUser] = useState("");
+  const [loginAux, setLoginAux] = useState("");
+  const [loginStateAux, setLoginUserAux] = useState("");
   // En loggedUser vamos a almacenar los datos del usuario loggeado
 
   const getSubmitLogin = async (logeado) => {
@@ -52,8 +55,7 @@ function App() {
       localStorage.setItem("loginOk", "true");
     }
   };
-  const [loginAux, setLoginAux] = useState("");
-  const [loginStateAux, setLoginUserAux] = useState("");
+  
   const saveDataLocaStorage = () => {
     setLoginAux(localStorage.getItem("loginOk"));
     setLoginUserAux(localStorage.getItem("loginState"));
@@ -62,6 +64,7 @@ function App() {
   useEffect(() => {
     validateLogin();
   }, [loginState]);
+  
   useEffect(() => {
     saveDataLocaStorage();
   }, [loginState]);
@@ -71,7 +74,7 @@ function App() {
       {loginAux === "true" ? (
         <BrowserRouter>
           <ResponsiveAppBar loginState={loginStateAux} setLoginAux={setLoginAux}></ResponsiveAppBar>
-          <Container>
+          <Container sx={{minHeight: '100%', paddingBottom: '105px'}}>
             <Routes>
               <Route path="/" element={<DashboardAux></DashboardAux>}></Route>
               <Route path="/clientes" element={<Clientes></Clientes>}></Route>
@@ -230,7 +233,8 @@ function App() {
         </BrowserRouter>
       ) : (
         <Login getSubmitLogin={getSubmitLogin} loginStateAux={loginStateAux} progress={progress}></Login>
-      )}
+        )}
+        <Footer></Footer>
     </>
   );
 }

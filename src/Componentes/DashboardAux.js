@@ -25,6 +25,7 @@ ChartJS.register(
 
 
 function DashboardAux() {
+  
 
   const getWeek = () => {
     let datesAndDays = [];
@@ -76,6 +77,7 @@ function DashboardAux() {
 
   useEffect(() => {
     getQuotationValueForDay(); // Llamada a la función "getQuotationValueForDay" dentro del hook "useEffect"
+    console.log()
   }, []); // El segundo argumento de "useEffect" es un arreglo vacío que indica que se ejecutará solo una vez
 
   useEffect(() => {

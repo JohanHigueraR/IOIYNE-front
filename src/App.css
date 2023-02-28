@@ -4,10 +4,13 @@
   --color2: #C7E2FF;
   --color3: #1976d2;
   --colorAux: rgb(58, 51, 159);
+  box-sizing: border-box;
 }
 
 body {
   background-color: var(--color1) !important;
+  height: 100%;
+  
 }
 
 .logo img {

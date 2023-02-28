@@ -6,6 +6,7 @@ import Card from "./Card";
 
 
 function Productos() {
+  console.log(process.env)
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const [products, setProducts] = useState([]);
@@ -15,7 +16,6 @@ function Productos() {
     const data = await response.json();
     setProducts(data);
     setLoading(false)
-    
   };
   useEffect(() => {
     loadProducts();
